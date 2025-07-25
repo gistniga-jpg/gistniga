@@ -1,4 +1,4 @@
- // === 광고 팝업 ===
+// === 광고 팝업 ===
 function showAdPopup() {
   document.getElementById('adPopupOverlay').style.display = 'flex';
   document.body.style.overflow = 'hidden';
@@ -9,6 +9,11 @@ function closeAdPopup() {
 }
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('adCloseBtn').onclick = closeAdPopup;
+
+  // === 처음 입장 시 자동 매칭 시도 ===
+  mainButton.disabled = true;
+  appendMessage("🔍 Finding your anonymous gist buddy…");
+  socket.emit("find partner");
 });
 
 // === 전역 변수 ===
@@ -127,11 +132,6 @@ sendButton.onclick = function() {
 messageInput.onkeydown = function(e) {
   if (e.key === "Enter" && !sendButton.disabled) sendButton.onclick();
 };
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('adCloseBtn').onclick = closeAdPopup;
-
-  document.body.style.overflow = "hidden"; // CHANGED: 홈페이지 진입 시 화면 고정
-});
 
 // === 매칭/방 입장 ===
 socket.on("partner found", function(roomId) {
