@@ -1,0 +1,271 @@
+
+body, html {
+  margin: 0;
+  padding: 0;
+  background: #181e12;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  width: 100vw;
+  min-height: 100vh;
+}
+#nigeria-flag-mobile {
+  width: auto;         /* 모바일에 맞는 국기 가로 */
+  height: 35px;
+  display: flex;
+  margin: 0px auto 7px auto;  /* 중앙 정렬 + 여백 */
+  border: 1.5px solid #212d25; /* 테두리 */
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 7px #0001;
+margin-bottom: -5px;
+}
+#nigeria-flag-mobile div {
+  flex: 1;
+  height: 100%;
+}
+#introMessage {
+    margin: -10px 0 0px 0;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #dcf8c6;
+    font-size: 0.8em;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    margin-bottom: 33px;
+    margin-top: 60px;
+    padding-bottom: 6px;
+}
+#nigeria-flag-mobile .green { background: #008753; }
+#nigeria-flag-mobile .white { background: #fff; }
+#adPopupOverlay {
+  position: fixed;
+  left: 0; top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #212d25cc;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s;
+}
+#adPopupBox {
+  background: #181e12;
+  border-radius: 16px;
+  box-shadow: 0 2px 18px #000b;
+  padding: 0;
+  min-width: 200px;
+  max-width: 96vw;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#adPopupBox img {
+  width: 98vw;
+  max-width: 390px;
+  height: 80px;
+  border-radius: 12px;
+  margin: 0 auto;
+}
+.ad-close-btn {
+  position: absolute;
+  top: -36px;
+  right: 2vw;
+  z-index: 10;
+  background: #fff;
+  color: #111;
+  border: none;
+  border-radius: 14px;
+  font-size: 18px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 1 2px 8px #0003;
+}
+
+.m-container {
+  max-width: 100vw;
+  width: 100vw;
+  min-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: #181e12;
+}
+#m-messages {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  list-style: none;
+  margin: -30px 0 8px 0;
+  padding: 10px 0 6px 0;
+  background: #212d25;
+  border-radius: 12px;
+  font-size: 1.15em;
+  font-weight:600;
+  min-height: 220px;
+  max-height: 48vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+#m-messages li {
+    padding: 7px 14px;
+    margin: 4px 0;
+    border-radius: 12px;
+    max-width: 82%;
+    word-wrap: break-word;
+    border: 1px solid #262;
+    background: #222c22;
+    color: #dcf8c6;
+    position: relative;
+}
+.self-message {
+  background: #1f4d2b;
+  color: #fff;
+  align-self: flex-end;
+  margin-left: auto;
+  text-align: right;
+  border: 1.5px solid #22d75a;
+  border-radius: 13px 13px 11px 7px;
+}
+.other-message {
+  background: #253828;
+  color: #fff830;
+  align-self: flex-start;
+  margin-right: auto;
+  border: 1.5px solid #22d75a;
+  border-radius: 13px 13px 7px 13px;
+}
+.typing-message {
+  display: flex;
+  align-items: center;
+  color: #dcf8c6;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  margin: 7px 0 7px 0;
+}
+.typing-message .typing-label {
+  margin-right: 7px;
+  color: #dcf8c6;
+}
+.typing-dots {
+  display: inline-block;
+  height: 16px;
+  vertical-align: middle;
+}
+.typing-dots span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 0 2px;
+  background: #22d75a;
+  border-radius: 50%;
+  opacity: 0.45;
+  animation: typingBlink 0.8s infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.13s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.23s; }
+@keyframes typingBlink {
+  0%, 80%, 100% { opacity: 0.2; }
+  40% { opacity: 1; }
+}
+.m-chat-controls {
+  display: flex;
+  padding: 0 0 7px 0;
+  gap: 0;
+  background: #181e12;
+  border: none;
+}
+#m-messageInput::placeholder {
+  color: #9be8a0a1;              /* 모바일 전용 색상 */
+  font-size: 1rem;
+}
+#m-messageInput {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 44px;
+  padding: 0 40px;
+  border-radius: 99px;
+  border: 1.5px solid #22d75a;
+  background: #181e12;
+  color: #e7fef2;
+  font-size: 1.07em;
+  margin: 0 7px 0 0;
+  outline: none;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+font-weight: 630;
+}
+#m-messageInput:focus {
+  border-color: #22d75a;
+  background: #212d25;
+}
+#m-sendButton {
+  width: 70px;
+  height: 44px;
+  border-radius: 99px;
+  background: #22d75a;
+  color: #181e12;
+  font-size: 1.02em;
+  font-weight: bold;
+  border: none;
+  transition: background 0.13s, color 0.13s;
+}
+#m-sendButton:disabled {
+  background: #23241f !important;
+  color: #999 !important;
+}
+#m-mainButton {
+  width: 30vw;
+  margin: 0px auto 16px auto;
+    padding: initial;
+  border-radius: 99px;
+  background: #22d75a;
+  color: #181e12;
+  font-size: 0.98em;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 2px 7px #0001;
+        height: 38px;
+    margin-right: 5px;
+
+}
+#m-mainButton.end {
+  background: #ffeb3b;
+  color: #181e12;
+        height: 38px;
+}
+#m-mainButton:disabled {
+  background: #23241f !important;
+  color: #999 !important;
+        height: 38px;
+}
+@media (max-width: 450px) {
+  .m-header { font-size: 2rem; 
+        color: #dcf8c6;
+    font-weight: 600;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+text-align: center;
+border-bottom: 1.5px solid #008753;
+        margin-bottom: -55px;
+        margin-top: 5px;
+    padding-bottom: 6px;
+   
+}
+  #m-messages { min-height: 140px; font-size: 1em; }
+  #m-messageInput, #m-sendButton { height: 38px; font-size: 0.98em; }
+  #m-mainButton { font-size: 0.98em; }
+}
+#adPopupOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 2000;
+  background: rgba(0,0,0,0.18);  /* 선택: 팝업 밖 흐림효과 */
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+

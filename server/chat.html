@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<script>
+  // 단순 모바일 디바이스 판별(ios/android 등)
+  if (/Mobi|Android|iPhone|iPad|iPod|Windows Phone|IEMobile|BlackBerry/i.test(navigator.userAgent)) {
+    if (!location.pathname.endsWith('/mobile.html')) {
+      // PC에서도 모바일 창 크기로 띄운 경우는 제외 (원하면 수정)
+      location.replace('/mobile.html');
+    }
+  }
+</script>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gist Naija - Anonymous Chat Room</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="header-wrap">
+      <div id="nigeria-flag">
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="green"></div>
+      </div>
+      <h1>Gist ₦aija</h1>
+<div id="introMessage">
+  Welcome! Start chatting anonymously with a gist buddy 
+</div>
+    </div>
+    
+    <!-- === 광고 팝업 위치: 타이틀 바로 아래 === -->
+<!-- === 광고 팝업 위치: 타이틀 바로 아래 === -->
+<div id="adPopupOverlay" style="display: none; flex-direction: column;">
+  <div id="adPopupBox">
+    <div style="margin-top:14px; height:100px; margin-bottom: -50px; text-align:center;">
+      <div style="position: relative; display: inline-block;">
+        <!-- 광고 이미지는 링크 없이 단독 노출 -->
+        <img src="/AD/1.png" alt="Ad image" style="max-width:430px; height:100px; margin-top:-52px; border-radius: 12px;" />
+        <button class="ad-close-btn" id="adCloseBtn" type="button"
+          style="position: absolute; top: -52px; right: 0px; z-index: 10; background: #202f44; color: #e7fef2; border: none; border-radius: 12px; font-size: 20px; width: 30px; height: 30px; cursor: pointer; font-weight: bold; box-shadow: 1 2px 8px #0003;">
+          ×
+        </button>
+      </div>
+      <!-- === 버튼 2개 추가 === -->
+      <div style="display: flex; justify-content: center; gap: 18px; margin-top: 18px;">
+        <a href="https://t.me/your_channel" target="_blank"
+           style="background: #229ED9; color: #fff; font-weight: 600; border: none; border-radius: 7px; padding: 9px 24px; font-size: 16px; text-decoration: none; box-shadow: 0 2px 8px #0001; display: inline-block; transition: background 0.15s;">
+          Telegram
+        </a>
+        <a href="https://wa.me/your_whatsapp_number" target="_blank"
+           style="background: #25D366; color: #fff; font-weight: 600; border: none; border-radius: 7px; padding: 9px 24px; font-size: 16px; text-decoration: none; box-shadow: 0 2px 8px #0001; display: inline-block; transition: background 0.15s;">
+          WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+    <ul id="messages"></ul>
+    <div class="chat-controls">
+      <button id="mainButton" class="start">Start Gist</button>
+      <input type="text" id="messageInput" placeholder="Type a message..." disabled />
+      <button id="sendButton" disabled>Send</button>
+    </div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

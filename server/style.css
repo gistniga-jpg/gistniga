@@ -1,0 +1,310 @@
+/* (e-style.css: 진짜 나이지리아 20대 스타일) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+body {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background: #151a17;
+  margin: 0;
+  padding: 0;
+  color: #e7fef2;
+  font-size: 15px;
+  min-height: 90vh;
+}
+#introMessage {
+  margin: -10px 0 0px 0;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #dcf8c6;
+  font-size: 1.1em;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+#bottomNotice {
+  margin: 14px 0 10px 0;
+  text-align: center;
+  color: #7cbb7e;
+  font-size: 1em;
+  letter-spacing: -0.4px;
+  opacity: 0.9;
+}
+.container {
+  width: 100%;
+  max-width: 430px;
+  margin: 15px auto 0 auto;
+  background: #212d25;
+  border-radius: 13px;
+  box-shadow: 0 2px 16px #0004;
+  padding: 18px 10px 25px 10px;
+  border: 1.5px solid #1c2620;
+}
+#nigeria-flag {
+  width: 430px;         /* 전체 가로길이 (조절 가능) */
+  height: 45px;        /* 전체 세로길이 (조절 가능) */
+  display: flex;
+  margin: -12px auto 15px auto;  /* 상단 중앙 정렬 + 여백 */
+  border: 1.5px solid #212d25;     /* 테두리 */
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 7px #0001;
+}
+#nigeria-flag div {
+  flex: 1;
+  height: 200%;
+}
+#nigeria-flag .green { background: #008753; }
+#nigeria-flag .white { background: #fff; }
+h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #dcf8c6;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  background: none;
+  border-bottom: 1.5px solid #008753;
+  padding-bottom: 10px;
+  margin-top: 10px;
+  -text-shadow: 0 1px 16px #008753bb, 0 2px 6px #000b;(하이라이트 기능 off)
+}
+h2, h3 {
+  color: #fff830;
+  margin-top: 16px;
+  margin-bottom: 7px;
+  font-weight: 600;
+  font-size: 1.1em;
+}
+p {
+  text-align: center;
+  color: #d5efdb;
+  margin-top: 0;
+  font-size: 1em;
+}
+ul { padding-left: 18px; }
+ul li {
+  color: #b8ffb4;
+  margin-bottom: 5px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+/* 채팅 메시지 박스 */
+ul#messages {
+  list-style: none;
+  padding: 0 6px;
+  height: 270px;
+  overflow-y: auto;
+  border: 1.5px solid #293c2a;
+  margin-bottom: 12px;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  background: #1c241e;
+  border-radius: 10px;
+}
+ul#messages li,
+.self-message,
+.other-message,
+.typing-message {
+  font-size: 15px;
+  font-weight: 600;
+}
+ul#messages li {
+  padding: 7px 14px;
+  margin: 4px 0;
+  border-radius: 12px;
+  max-width: 82%;
+  word-wrap: break-word;
+  border: 1px solid #262;
+  background: #222c22;
+  color: #dcf8c6;
+  position: relative;
+}
+.self-message {
+  background: #1f4d2b;
+  color: #fff;
+  border: 1px solid #22d75a;
+  align-self: flex-end;
+  margin-left: auto;
+  text-align: right;
+  font-weight: 500;
+  border-radius: 12px 12px 11px 7px;
+  position: relative;
+}
+.other-message,
+.typing-message {
+  background: #253828;
+  color: #fff830;
+  border: 1px solid #22d75a;
+  align-self: flex-start;
+  margin-right: auto;
+  border-radius: 12px 12px 7px 12px;
+  font-weight: 500;
+  position: relative;
+}
+/* 타이핑 표시 */
+.typing-message {
+  display: inline-flex;
+  align-items: center;
+  margin: 7px 0 7px 0;
+  color: #22d75a none !important;
+  border: 1px solid #393 none !important;
+}
+.typing-message .typing-label {
+  margin-right: 8px;
+  color: #dcf8c6;
+  font-size: 15px;
+  font-weight: 600;
+}
+/* ===== 채팅 입력창 + 버튼 ===== */
+.chat-controls {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 10px 0 8px 0;
+  border-radius: 11px;
+  background: #1a241b;
+  box-shadow: 0 -1px 6px #0003;
+  border-top: 1.5px solid #242;
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  min-height: 52px;
+  font-size: 15px;
+}
+#mainButton, #sendButton {
+  height: 36px;
+  width: 90px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 88px;
+  border: none;
+  padding: 0 19px;
+  letter-spacing: 0.6px;
+  cursor: pointer;
+  transition: background 0.09s, color 0.09s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  margin: 0 4px;
+  outline: none;
+  box-shadow: 0 2px 7px #1c262044;
+  background: #22d75a;
+  color: #171a13;
+  border: 1px solid #22d75a;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+#mainButton.end {
+  background: #ffeb3b;
+  color: #171a13;
+  border: 1px solid #ffeb3b;
+}
+#mainButton:disabled,
+#sendButton:disabled {
+  background: #23241f none !important;
+  color: #999 !important;
+  border: 1px solid #23241f;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+#mainButton:hover:enabled,
+#sendButton:hover:enabled {
+  background: #ffeb3ba;
+  color: #171a13;
+}
+#sendButton {
+  width: 64px;
+  margin-left: 2px;
+  background: #22d75a;
+  color: #181e12;
+  border: 1px solid #22d75a;
+}
+#sendButton:hover:enabled {
+  background: #22d75a;
+  color: #171a13;
+}
+#messageInput {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 36px;
+  padding: 0 13px;
+  font-size: 15px;
+  border-radius: 88px;
+  border: 1px solid #22d75a;
+  background: #181e12;
+  color: #e7fef2;
+  font-weight: 500;
+  outline: none;
+  margin: 0 6px;
+  transition: border 0.11s, background 0.14s;
+  box-sizing: border-box;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+#messageInput:focus {
+  border-color: #22d75a;
+  background: #212d25;
+  color: ##e7fef2;
+}
+.typing-dots {
+  display: inline-block;
+  height: 15px;
+  vertical-align: middle;
+}
+.typing-dots span {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin: 0 1.5px;
+  background: #22d75a;
+  border-radius: 50%;
+  opacity: 0.45;
+  animation: typingBlink 0.9s infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.11s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.22s; }
+@keyframes typingBlink {
+  0%, 80%, 100% { opacity: 0.18; }
+  40% { opacity: 1; }
+}
+ul#messages::-webkit-scrollbar {
+  width: 7px;
+  background: #293c2a;
+}
+ul#messages::-webkit-scrollbar-thumb {
+  background: #23241f;
+  border-radius: 5px;
+}
+ul#messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+@media (max-width: 500px) {
+  .container {
+    max-width: 99vw;
+    padding: 7px 1vw 32px 1vw;
+    border-radius: 7px;
+    border-width: 1px;
+  }
+  h1 { font-size: 1rem; }
+  ul#messages { height: 150px; font-size: 14px; }
+  #mainButton, #sendButton, #messageInput { height: 31px; font-size: 14px; }
+}
+::-webkit-input-placeholder { color: #9be8a0a1; }
+::-moz-placeholder { color: #9be8a0a1; }
+:-ms-input-placeholder { color: #9be8a0a1; }
+::placeholder { color: #9be8a0a1; }
+a {
+  color: #22d75a;
+  text-decoration: none;
+  font-weight: 600;
+}
+#adPopupOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 2000;
+  background: rgba(0,0,0,0.18);  /* 선택: 팝업 밖 흐림효과 */
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+

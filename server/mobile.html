@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Gist Naija - Mobile Chat</title>
+  <link rel="stylesheet" href="mobile.css" />
+</head>
+<body>
+  <div class="m-container">
+    <div class="header-wrap-mobile">
+      <div id="nigeria-flag-mobile">
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="green"></div>
+      </div>
+      <header class="m-header">Gist ₦aija</header>
+      <div id="introMessage">
+        Welcome! Start chatting anonymously with a gist buddy
+      </div>
+    </div>
+<div id="adPopupOverlay" style="display: none; flex-direction: column;">
+  <div id="adPopupBox">
+    <div style="margin-top:14px; height:90px; margin-bottom: -50px; text-align:center;">
+      <div style="position: relative; display: inline-block;">
+        <!-- 이미지만 노출 (a태그 제거) -->
+        <img src="/AD/1.png" alt="Ad image" style="max-width: 98vw; height:90px; margin-top:-52px; border-radius: 12px;" />
+        <button class="ad-close-btn" id="adCloseBtn" type="button"
+          style="position: absolute; top: -52px; right: 0px; z-index: 10; background: #202f44; color: #e7fef2; border: none; border-radius: 12px; font-size: 18px; width: 28px; height: 28px; cursor: pointer; font-weight: bold; box-shadow: 1 2px 8px #0003;">
+          ×
+        </button>
+      </div>
+      <!-- 여기서부터 버튼 추가! -->
+      <div style="display: flex; justify-content: center; gap: 12px; margin-top: 18px;">
+        <a href="https://t.me/your_channel" target="_blank"
+          style="background:#229ED9; color:#fff; font-weight:600; border:none; border-radius:7px; padding:9px 18px; font-size:15px; text-decoration:none; box-shadow:0 2px 8px #0001; display:inline-block;">
+          Telegram
+        </a>
+        <a href="https://wa.me/your_whatsapp_number" target="_blank"
+          style="background:#25D366; color:#fff; font-weight:600; border:none; border-radius:7px; padding:9px 18px; font-size:15px; text-decoration:none; box-shadow:0 2px 8px #0001; display:inline-block;">
+          WhatsApp
+        </a>
+      </div>
+      <!-- 버튼 끝 -->
+    </div>
+  </div>
+</div>
+    <ul id="m-messages"></ul>
+    <div class="m-chat-controls">
+<button id="m-mainButton" class="start">Start Gist</button>
+      <input type="text" id="m-messageInput"
+             placeholder="Type a message..." autocomplete="off" disabled />
+      <button id="m-sendButton" disabled>Send</button>
+    </div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="mobile.js"></script>
+</body>
+</html>
