@@ -115,13 +115,16 @@ margin-bottom: 30px;
     padding: 7px 19px;
     margin: 4px 0;
     border-radius: 12px;
-    max-width: 82%;
+    max-width: 100%;
     word-wrap: break-word;
     border: 1px solid #262;
     background: #222c22;
     color: #dcf8c6;
     position: relative;
 margin-left: 6px;
+white-space: pre-wrap;   /* 추가 */
+    word-break: break-word;  /* 추가 */
+
 }
 .self-message {
   background: #1f4d2b;
