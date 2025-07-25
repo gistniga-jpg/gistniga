@@ -9,14 +9,13 @@ body, html {
 }
 #nigeria-flag-mobile {
   width: auto;         /* 모바일에 맞는 국기 가로 */
-  height: 35px;
+  height: 55px;
   display: flex;
   margin: 0px auto 7px auto;  /* 중앙 정렬 + 여백 */
   border: 1.5px solid #212d25; /* 테두리 */
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 7px #0001;
-margin-bottom: -5px;
 }
 #nigeria-flag-mobile div {
   flex: 1;
@@ -84,15 +83,17 @@ margin-bottom: -5px;
   box-shadow: 1 2px 8px #0003;
 }
 
+/* 기존 .m-container → vh 대신 안정적인 높이 사용 */
 .m-container {
-  max-width: 100vw;
   width: 100vw;
-  min-height: 82vh;
+  height: 100dvh;              /* CHANGED: 실제 뷰포트 높이 기준 */
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   background: #181e12;
+  overflow: hidden;            /* 키보드 올라올 때 넘침 방지 */
 }
+
 #m-messages {
   flex: 1 1 auto;
   overflow-y: auto;
@@ -108,6 +109,7 @@ margin-bottom: -5px;
   display: flex;
   flex-direction: column;
   gap: 2px;
+margin-bottom: 30px;
 }
 #m-messages li {
     padding: 7px 14px;
@@ -254,7 +256,7 @@ border-bottom: 1.5px solid #008753;
     padding-bottom: 6px;
    
 }
-  #m-messages { min-height: 140px; font-size: 1em; }
+  #m-messages { min-height: 420px; font-size: 1em; }
   #m-messageInput, #m-sendButton { height: 38px; font-size: 0.98em; }
   #m-mainButton { font-size: 0.98em; }
 }
@@ -268,4 +270,11 @@ border-bottom: 1.5px solid #008753;
   align-items: center;
   justify-content: center;
 }
+window.addEventListener('focusin', () => {
+  document.body.style.position = 'fixed';  // 키보드 올라올 때 스크롤 고정
+});
+window.addEventListener('focusout', () => {
+  document.body.style.position = '';
+});
+
 
