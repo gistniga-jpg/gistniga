@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('adCloseBtn').onclick = closeAdPopup;
 
   document.body.style.overflow = "hidden"; // CHANGED: 화면 고정
-});
+
   // ↓↓↓ 배경 클릭시 닫기 기능 제거(주석처리)
   // document.getElementById('adPopupOverlay').onclick = function(e) {
   //   if (e.target === this) closeAdPopup();
