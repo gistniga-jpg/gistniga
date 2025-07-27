@@ -1,4 +1,4 @@
-// === 광고 팝업 ===
+// === 광고 팝업 ===.
 function showAdPopup() {
   document.getElementById('adPopupOverlay').style.display = 'flex';
   document.body.style.overflow = 'hidden';
