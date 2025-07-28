@@ -2,8 +2,10 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const Redis = require("ioredis");
+const helmet = require("helmet"); // ✅ CHANGED: helmet 불러오기
 
 const app = express();
+app.use(helmet()); // ✅ CHANGED: 보안 헤더 설정
 app.use(express.static(__dirname));
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
