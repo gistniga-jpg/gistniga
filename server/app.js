@@ -31,6 +31,7 @@ const messages = document.getElementById("messages");
 const socket = io();
 
 let chatting = false, myRoomId = null;
+let typingTimeout = null; // 💡 추가: 타이핑 타이머 전역 변수
 
 // === 메시지 표시 ===
 function appendMessage(msg, self) {
