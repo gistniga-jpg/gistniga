@@ -8,7 +8,10 @@ const app = express();
 app.use(helmet()); // ✅ CHANGED: 보안 헤더 설정
 app.use(express.static(__dirname));
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "*" } });
+const io = new Server(server, {
+  cors: { origin: "*" },
+  serveClient: true // ✅ 클라이언트용 socket.io.js 직접 서빙 활성화
+});
 
 const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
 const redis = new Redis(REDIS_URL);
