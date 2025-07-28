@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<script>
-  // 단순 모바일 디바이스 판별(ios/android 등)
-  if (/Mobi|Android|iPhone|iPad|iPod|Windows Phone|IEMobile|BlackBerry/i.test(navigator.userAgent)) {
-    if (!location.pathname.endsWith('/mobile.html')) {
-      // PC에서도 모바일 창 크기로 띄운 경우는 제외 (원하면 수정)
-      location.replace('/mobile.html');
-    }
-  }
-</script>
+<script src="chat-redirect.js"></script>
 
 <head>
   <meta charset="UTF-8" />
