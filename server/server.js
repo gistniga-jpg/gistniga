@@ -22,26 +22,25 @@ const QUEUE_KEY = "randomchat_waiting_queue";
 const ROOMS_KEY = "randomchat_rooms";
 const setKey = "randomchat_waiting_set";
 
-// === 실시간 접속자/트래픽 모니터링 ===
-let totalMessages = 0;
-let totalBytes = 0;
+// === 실시간 모니터링: 현재 접속자 / 누적 접속자 / 누적 전송량 ===
+let totalConnections = 0;      // 누적 접속자
+let totalBytes = 0;            // 누적 전송량(bytes)
 
+// 새 클라이언트 접속
 io.on("connection", (socket) => {
-  // 메시지 수 & 전송량 계산
-  socket.on("chat message", (roomId, msg) => {
-    totalMessages++;
-    totalBytes += Buffer.byteLength(msg, "utf8");
-  });
+  totalConnections++;  
 
-  socket.on("disconnect", () => {
-    // 접속 종료 시에도 한 번 로그 남기면 편리
-    console.log(`[DISCONNECT] ${socket.id}, 현재 접속자: ${io.engine.clientsCount}`);
+  // 메시지 발생 시 전송량 계산
+  socket.on("chat message", (roomId, msg) => {
+    totalBytes += Buffer.byteLength(msg, "utf8");
   });
 });
 
-// 5초마다 상태 로그 출력
+// 5초마다 모니터링 로그 출력
 setInterval(() => {
-  console.log(`[MONITOR] 접속자: ${io.engine.clientsCount}, 누적 메시지: ${totalMessages}, 누적 전송량: ${totalBytes} bytes`);
+  console.log(
+    `[MONITOR] 현재 접속자: ${io.engine.clientsCount}, 누적 접속자: ${totalConnections}, 누적 전송량: ${totalBytes} bytes`
+  );
 }, 5000);
 
 // Lua Script: 2명씩만 pop
