@@ -98,7 +98,7 @@ function resetUI() {
 function finishChat() {
   resetUI();
   let count = Number(localStorage.getItem('adPopupCountMobile') || 0) + 1;
-  const AD_POPUP_INTERVAL = 2; // 원하는 값으로 수정
+  const AD_POPUP_INTERVAL = 100; // 원하는 값으로 수정
   if (count >= AD_POPUP_INTERVAL) {
     showAdPopup();
     count = 0;

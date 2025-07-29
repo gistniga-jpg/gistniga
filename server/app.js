@@ -96,7 +96,7 @@ function resetUI() {
 function finishChat() {
   resetUI();
   let count = Number(localStorage.getItem('adPopupCount') || 0) + 1;
-  const AD_POPUP_INTERVAL = 2; // ← 여기에 원하는 횟수 설정!
+  const AD_POPUP_INTERVAL = 100; // ← 여기에 원하는 횟수 설정!
   if (count >= AD_POPUP_INTERVAL) {
     showAdPopup();
     count = 0;

@@ -135,7 +135,7 @@ setInterval(async () => {
       safeLog(`[STALE SOCKET] queue에서 제거됨: ${id}`);
     }
   }
-}, 500);
+}, 200);
 
 // === 메인 소켓 로직 ===
 io.on("connection", (socket) => {
@@ -159,7 +159,9 @@ socket.on('stop typing', (roomId) => {
   socket.on("find partner", async () => {
     try {
       await removeFromQueue(socket.id);
-      await leaveAllRooms(socket);
+await leaveAllRooms(socket);
+await redis.srem(setKey, socket.id); // ✅ set에서도 제거
+
 
       const pair = await atomicPopPair(QUEUE_KEY);
 
@@ -224,6 +226,8 @@ socket.on('stop typing', (roomId) => {
         }
         await removeRoom(roomId);
       }
+await removeFromQueue(socket.id);   // ✅ 마지막 자기 자신 제거
+safeLog("[DISCONNECT]", socket.id);
     }
     safeLog("[DISCONNECT]", socket.id);
   });
