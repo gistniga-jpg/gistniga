@@ -8,8 +8,7 @@ const path = require("path");
 const app = express();
 app.use(helmet()); // ✅ CHANGED: 보안 헤더 설정
 app.use(express.static(__dirname));
-app.use('/server/icon', express.static(path.join(__dirname, '..', 'icon'))); // ✅ CHANGED
-
+app.use('/server/icon', express.static(path.join(__dirname, 'icon'))); // ✅ CHANGED
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: "*" },
