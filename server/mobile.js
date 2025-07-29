@@ -28,22 +28,6 @@ let myRoomId = null;
 let isTyping = false;
 let typingTimeout = null;
 
-// === [UX 개선] 모바일 키보드 대응 ===
-if (window.visualViewport) {
-  const chatMessages = document.getElementById("m-messages");
-
-  function adjustScroll() {
-    // 메시지를 맨 아래로 스크롤
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-
-  // 키보드가 올라오거나 내려갈 때마다 호출
-  window.visualViewport.addEventListener('resize', adjustScroll);
-  window.visualViewport.addEventListener('scroll', adjustScroll);
-
-  // 메시지 입력 포커스 시에도 보정
-  messageInput.addEventListener('focus', adjustScroll);
-}
 
 
 // === 메시지 표시 ===
