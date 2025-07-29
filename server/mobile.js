@@ -119,8 +119,15 @@ mainButton.onclick = function() {
 };
 
 // === 메시지 전송 ===
+// === 메시지 전송 ===
+sendButton.addEventListener("mousedown", (e) => {
+  // iOS에서 키보드 유지: 버튼 클릭으로 blur 방지
+  e.preventDefault();
+  messageInput.focus(); // 미리 포커스 유지
+});
+
 sendButton.onclick = function(e) {
-  e.preventDefault(); // 기본 동작 방지 (iOS에서 도움됨)
+  e.preventDefault(); // 기본 제출 방지
 
   const msg = messageInput.value.trim();
   if (msg && chatting && myRoomId) {
@@ -128,15 +135,16 @@ sendButton.onclick = function(e) {
     socket.emit("chat message", myRoomId, msg);
     messageInput.value = "";
 
-    // 키보드 유지: focus 다시 주기
-    setTimeout(() => {
-      messageInput.focus();
-    }, 0);
+    // 메시지 전송 후에도 키보드 유지
+    messageInput.focus();
 
     if (isTyping) {
       isTyping = false;
       socket.emit('stop typing', myRoomId);
     }
+
+    // 스크롤을 맨 아래로
+    messages.scrollTop = messages.scrollHeight;
   }
 };
 messageInput.onkeydown = function(e) {
