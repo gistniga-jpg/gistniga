@@ -119,12 +119,20 @@ mainButton.onclick = function() {
 };
 
 // === 메시지 전송 ===
-sendButton.onclick = function() {
+sendButton.onclick = function(e) {
+  e.preventDefault(); // 기본 동작 방지 (iOS에서 도움됨)
+
   const msg = messageInput.value.trim();
   if (msg && chatting && myRoomId) {
     appendMessage(msg, true);
     socket.emit("chat message", myRoomId, msg);
     messageInput.value = "";
+
+    // 키보드 유지: focus 다시 주기
+    setTimeout(() => {
+      messageInput.focus();
+    }, 0);
+
     if (isTyping) {
       isTyping = false;
       socket.emit('stop typing', myRoomId);
