@@ -12,6 +12,8 @@ app.use(express.static(__dirname));
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: "*" },
+ pingInterval: 25000,   // 25초마다 ping
+  pingTimeout: 1200000,    // 1200초간 응답 없으면 끊음
   serveClient: true // ✅ 클라이언트용 socket.io.js 직접 서빙 활성화
 });
 
@@ -41,7 +43,7 @@ setInterval(() => {
   console.log(
     `[MONITOR] 현재 접속자: ${io.engine.clientsCount}, 누적 접속자: ${totalConnections}, 누적 전송량: ${totalBytes} bytes`
   );
-}, 5000);
+}, 10000);
 
 // Lua Script: 2명씩만 pop
 const popPairScript = `
