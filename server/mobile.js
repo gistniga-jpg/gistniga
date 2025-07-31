@@ -188,3 +188,15 @@ socket.on("no partner", function() {
   removeTypingInChat();
   resetUI();
 });
+// === JS 에러 감지 ===
+window.onerror = function (message, source, lineno, colno, error) {
+  socket.emit("client error", { message, source, lineno, colno });
+};
+window.addEventListener("unhandledrejection", (event) => {
+  socket.emit("client error", { message: event.reason?.message || "Promise rejection" });
+});
+
+// === 5초마다 ping ===
+setInterval(() => {
+  socket.emit("client ping", { ts: Date.now(), url: location.href });
+}, 5000);

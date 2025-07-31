@@ -145,6 +145,18 @@ setInterval(async () => {
 
 // === 메인 소켓 로직 ===
 io.on("connection", (socket) => {
+  // 클라이언트 JS 에러 수집
+  socket.on("client error", (data) => {
+    console.log(`[CLIENT ERROR][${socket.id}]`, data);
+  });
+
+  // 클라이언트 상태 ping 수집
+  socket.on("client ping", (data) => {
+    console.log(`[CLIENT PING][${socket.id}]`, data);
+    // 필요하면 pong 응답
+    socket.emit("pong");
+  });
+
   safeLog("[CONNECT]", socket.id);
 
 socket.on("chat message", (roomId, msg) => {
