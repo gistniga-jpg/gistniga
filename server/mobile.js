@@ -70,6 +70,12 @@ messageInput.addEventListener('input', () => {
     }, 500); // 0.5초 정도로도 충분
   }
 });
+// === 모바일 키보드 가림 방지 ===
+messageInput.addEventListener('focus', () => {
+  setTimeout(() => {
+    messageInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 300);
+});
 
 // === 소켓 이벤트로 입력중 안내 표시/삭제 ===
 socket.on('typing', () => {
@@ -121,31 +127,30 @@ mainButton.onclick = function() {
 // === 메시지 전송 ===
 // === 메시지 전송 ===
 // 버튼을 클릭 대신 touchstart로 처리
-sendButton.addEventListener("touchstart", (e) => {
-  e.preventDefault(); // 버튼 기본 동작 방지
-  messageInput.focus(); // 미리 포커스 유지
-
+// 1️⃣ 전역에 함수 선언
+function sendMsg() {
   const msg = messageInput.value.trim();
   if (msg && chatting && myRoomId) {
     appendMessage(msg, true);
     socket.emit("chat message", myRoomId, msg);
     messageInput.value = "";
-
-    // 전송 후에도 focus 유지
-    setTimeout(() => messageInput.focus(), 10);
-
     if (isTyping) {
       isTyping = false;
       socket.emit("stop typing", myRoomId);
     }
-
-    // 자동 스크롤
     messages.scrollTop = messages.scrollHeight;
   }
+}
+
+// 2️⃣ 이벤트 핸들러에서 공용 함수 호출
+sendButton.addEventListener("touchstart", (e) => {
+  e.preventDefault(); 
+  sendMsg(); // ✅ 전역 함수 호출
 });
-messageInput.onkeydown = function(e) {
-  if (e.key === "Enter" && !sendButton.disabled) sendButton.onclick();
-};
+
+// PC 클릭도 동일 처리
+sendButton.addEventListener("click", sendMsg);
+
 
 // === 매칭/방 입장 ===
 socket.on("partner found", function(roomId) {

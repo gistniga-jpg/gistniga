@@ -30,6 +30,12 @@ let totalBytes = 0;            // 누적 전송량(bytes)
 
 // 새 클라이언트 접속
 io.on("connection", (socket) => {
+ // === 접속 기기 로그 추가 ===
+  const ua = socket.handshake.headers['user-agent'] || '';
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod|Windows Phone|IEMobile|BlackBerry/i.test(ua);
+  console.log(`[CONNECT] ${socket.id} | ${isMobile ? 'MOBILE' : 'PC'} | UA: ${ua}`);
+
+
   totalConnections++;  
 
   // 메시지 발생 시 전송량 계산
