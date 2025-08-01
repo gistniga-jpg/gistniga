@@ -2,23 +2,12 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const Redis = require("ioredis");
-const helmet = require("helmet"); // ✅ CHANGED: helmet 불러오기
+
 const path = require("path");
 
 const app = express();
 // LogRocket CDN 허용
-app.use((req, res, next) => {
-  res.setHeader(
-    "Content-Security-Policy",
-    "script-src 'self' https://cdn.logrocket.io; " +
-    "worker-src 'self' blob: data: https://cdn.logrocket.com; " +
-    "connect-src 'self' https://cdn.logrocket.io; " +
-    "default-src 'self'; " +
-    "style-src 'self' 'unsafe-inline'; " +
-    "img-src 'self' data:;"
-  );
-  next();
-});
+
 app.use('/server/public', express.static(path.join(__dirname, 'icon'))); // ✅ CHANGED
 app.use(express.static(__dirname));
 const server = http.createServer(app);
