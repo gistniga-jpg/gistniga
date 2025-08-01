@@ -9,7 +9,8 @@ const app = express();
 // LogRocket CDN 허용
 
 app.use('/server/public', express.static(path.join(__dirname, 'icon'))); // ✅ CHANGED
-app.use(express.static(__dirname));
+// 기본 static 경로 제한
+app.use(express.static(path.join(__dirname, 'public'))); // CHANGED
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: "*" },
@@ -243,12 +244,12 @@ await redis.srem(setKey, socket.id); // ✅ set에서도 제거
           await removeFromQueue(otherId);
           await leaveAllRooms(otherSocket);
         }
-        await removeRoom(roomId);
-      }
-await removeFromQueue(socket.id);   // ✅ 마지막 자기 자신 제거
-safeLog("[DISCONNECT]", socket.id);
+      await removeRoom(roomId);
     }
-    safeLog("[DISCONNECT]", socket.id);
+await removeFromQueue(socket.id);   // ✅ 마지막 자기 자신 제거
+    }
+    // 연결 종료 로그
+    safeLog("[DISCONNECT]", socket.id); // CHANGED
   });
 });
 
