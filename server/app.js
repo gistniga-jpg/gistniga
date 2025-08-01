@@ -1,13 +1,5 @@
 
-  (function() {
-    var script = document.createElement('script');
-    script.src = 'https://cdn.logrocket.io/LogRocket.min.js';
-    script.async = true;
-    script.onload = function() {
-      window.LogRocket && window.LogRocket.init('acvrrz/gistniga');
-    };
-    document.head.appendChild(script);
-  })();
+  
 
 // === 광고 팝업 ===.
 function showAdPopup() {
