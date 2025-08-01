@@ -19,12 +19,6 @@ app.use((req, res, next) => {
   );
   next();
 });
-
-app.use(
-  helmet({
-    contentSecurityPolicy: false, // helmet의 CSP는 사용 안 함
-  })
-);
 app.use('/server/public', express.static(path.join(__dirname, 'icon'))); // ✅ CHANGED
 app.use(express.static(__dirname));
 const server = http.createServer(app);
