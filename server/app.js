@@ -1,4 +1,4 @@
-<script>
+
   (function() {
     var script = document.createElement('script');
     script.src = 'https://cdn.logrocket.io/LogRocket.min.js';
@@ -8,9 +8,6 @@
     };
     document.head.appendChild(script);
   })();
-</script>
-
-
 
 // === 광고 팝업 ===.
 function showAdPopup() {
