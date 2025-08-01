@@ -1,3 +1,14 @@
+<script>
+  (function() {
+    var script = document.createElement('script');
+    script.src = 'https://cdn.logrocket.io/LogRocket.min.js';
+    script.async = true;
+    script.onload = function() {
+      window.LogRocket && window.LogRocket.init('acvrrz/gistniga');
+    };
+    document.head.appendChild(script);
+  })();
+</script>
 
 
 
