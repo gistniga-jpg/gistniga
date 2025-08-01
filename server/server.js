@@ -10,20 +10,14 @@ const app = express();
 app.use(
   helmet({
     contentSecurityPolicy: {
-      useDefaults: true,
       directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
         "script-src": ["'self'", "https://cdn.logrocket.io"],
         "worker-src": ["'self'", "blob:"],
-        "connect-src": ["'self'", "https://cdn.logrocket.io"],
       },
     },
   })
 );
-
-app.use((req, res, next) => {
-  res.setHeader("Content-Security-Policy", "worker-src 'self' blob:");
-  next();
-});
 app.use('/server/public', express.static(path.join(__dirname, 'icon'))); // ✅ CHANGED
 app.use(express.static(__dirname));
 const server = http.createServer(app);
