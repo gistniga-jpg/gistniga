@@ -13,12 +13,17 @@ app.use(
       useDefaults: true,
       directives: {
         "script-src": ["'self'", "https://cdn.logrocket.io"],
-        "worker-src": ["'self'", "blob:"],   // ← 워커, blob URL 허용
-        "connect-src": ["'self'", "https://cdn.logrocket.io"], // 외부 fetch/XHR/WebSocket 등 허용
+        "worker-src": ["'self'", "blob:"],
+        "connect-src": ["'self'", "https://cdn.logrocket.io"],
       },
     },
   })
 );
+
+app.use((req, res, next) => {
+  res.setHeader("Content-Security-Policy", "worker-src 'self' blob:");
+  next();
+});
 app.use('/server/public', express.static(path.join(__dirname, 'icon'))); // ✅ CHANGED
 app.use(express.static(__dirname));
 const server = http.createServer(app);
