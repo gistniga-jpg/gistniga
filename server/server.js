@@ -13,7 +13,7 @@ app.use(
       directives: {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
         "script-src": ["'self'", "https://cdn.logrocket.io"],
-        "worker-src": ["'self'", "blob:"],
+        "worker-src": ["'self'", "blob:", "data:", "https://cdn.logrocket.com"],
       },
     },
   })
