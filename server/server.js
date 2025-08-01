@@ -7,16 +7,18 @@ const path = require("path");
 
 const app = express();
 // LogRocket CDN 허용
-app.use(helmet({
-  contentSecurityPolicy: {
-    useDefaults: true,
-    directives: {
-      "script-src": ["'self'", "https://cdn.logrocket.io"],
-      // 필요하다면 "unsafe-inline"이나 다른 도메인도 추가
-    }
-  }
-}));
-
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        "script-src": ["'self'", "https://cdn.logrocket.io"],
+        "worker-src": ["'self'", "blob:"],   // ← 워커, blob URL 허용
+        "connect-src": ["'self'", "https://cdn.logrocket.io"], // 외부 fetch/XHR/WebSocket 등 허용
+      },
+    },
+  })
+);
 app.use('/server/public', express.static(path.join(__dirname, 'icon'))); // ✅ CHANGED
 app.use(express.static(__dirname));
 const server = http.createServer(app);
