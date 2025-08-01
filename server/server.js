@@ -7,15 +7,22 @@ const path = require("path");
 
 const app = express();
 // LogRocket CDN 허용
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "script-src 'self' https://cdn.logrocket.io; " +
+    "worker-src 'self' blob: data: https://cdn.logrocket.com; " +
+    "connect-src 'self' https://cdn.logrocket.io; " +
+    "default-src 'self'; " +
+    "style-src 'self' 'unsafe-inline'; " +
+    "img-src 'self' data:;"
+  );
+  next();
+});
+
 app.use(
   helmet({
-    contentSecurityPolicy: {
-      directives: {
-        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        "script-src": ["'self'", "https://cdn.logrocket.io"],
-        "worker-src": ["'self'", "blob:", "data:", "https://cdn.logrocket.com"],
-      },
-    },
+    contentSecurityPolicy: false, // helmet의 CSP는 사용 안 함
   })
 );
 app.use('/server/public', express.static(path.join(__dirname, 'icon'))); // ✅ CHANGED
