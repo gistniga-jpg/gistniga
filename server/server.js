@@ -4,13 +4,16 @@ const { Server } = require("socket.io");
 const Redis = require("ioredis");
 
 const path = require("path");
+const compression = require("compression"); // CHANGED
 
 const app = express();
+app.use(compression()); // CHANGED
 // LogRocket CDN 허용
 
-app.use('/server/public', express.static(path.join(__dirname, 'icon'))); // ✅ CHANGED
+app.use('/server/public', express.static(path.join(__dirname, 'icon'), { maxAge: '1d', etag: false })); // CHANGED
+app.use('/AD', express.static(path.join(__dirname, 'AD'), { maxAge: '1d', etag: false })); // CHANGED
 // 기본 static 경로 제한
-app.use(express.static(path.join(__dirname, 'public'))); // CHANGED
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d', etag: false })); // CHANGED
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: "*" },
@@ -46,7 +49,7 @@ io.on("connection", (socket) => {
   });
 });
 
-// 5초마다 모니터링 로그 출력
+// 10초마다 모니터링 로그 출력 // CHANGED
 setInterval(() => {
   console.log(
     `[MONITOR] 현재 접속자: ${io.engine.clientsCount}, 누적 접속자: ${totalConnections}, 누적 전송량: ${totalBytes} bytes`
