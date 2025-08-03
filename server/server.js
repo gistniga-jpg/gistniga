@@ -11,7 +11,9 @@ app.use(compression()); // CHANGED
 // LogRocket CDN 허용
 
 app.use('/server/public', express.static(path.join(__dirname, 'icon'), { maxAge: '1d', etag: false })); // CHANGED
+62a0e4-codex/add-compression-and-caching-options
 app.use('/AD', express.static(path.join(__dirname, 'AD'), { maxAge: '1d', etag: false })); // CHANGED
+main
 // 기본 static 경로 제한
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d', etag: false })); // CHANGED
 const server = http.createServer(app);
