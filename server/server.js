@@ -4,13 +4,15 @@ const { Server } = require("socket.io");
 const Redis = require("ioredis");
 
 const path = require("path");
+const compression = require("compression"); // CHANGED
 
 const app = express();
+app.use(compression()); // CHANGED
 // LogRocket CDN 허용
 
 app.use('/server/public', express.static(path.join(__dirname, 'icon'))); // ✅ CHANGED
 // 기본 static 경로 제한
-app.use(express.static(path.join(__dirname, 'public'))); // CHANGED
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d', etag: false })); // CHANGED
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: "*" },
