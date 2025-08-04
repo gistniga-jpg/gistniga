@@ -66,11 +66,15 @@ matchmaker.on("match", (socketId1, socketId2) => {
 async function handleLeave(socket) {
   const roomId = socket.roomId;
   if (roomId) {
+    socket.leave(roomId); // CHANGED: ensure leaving socket.io room
+    socket.roomId = null; // CHANGED
     const users = await queue.redis.hget(ROOMS_KEY, roomId);
     if (users) {
       const otherId = JSON.parse(users).find((id) => id !== socket.id);
       const otherSocket = io.sockets.sockets.get(otherId);
       if (otherSocket) {
+        otherSocket.leave(roomId); // CHANGED
+        otherSocket.roomId = null; // CHANGED
         otherSocket.emit("partner left");
       }
       await removeRoom(roomId);
