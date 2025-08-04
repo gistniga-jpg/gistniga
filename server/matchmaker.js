@@ -1,33 +1,30 @@
-const { enqueue, dequeue, removeFromQueue } = require("./queue");
+const EventEmitter = require("events");
 
-const matchUsers = async (socket, io) => {
-  if (!socket.connected) return;
-
-  let tryCount = 0;
-  while (tryCount < 5) {
-    const otherSocketId = await dequeue();
-
-    if (!otherSocketId) {
-      await enqueue(socket.id);
-      return;
-    }
-    if (otherSocketId === socket.id) {
-      await removeFromQueue(socket.id);
-      tryCount++;
-      continue;
-    }
-
-    const otherSocket = io.sockets.sockets.get(otherSocketId);
-    if (otherSocket && otherSocket.connected) {
-      socket.partner = otherSocket;
-      otherSocket.partner = socket;
-      socket.emit("match", "You are now connected with a partner.");
-      otherSocket.emit("match", "You are now connected with a partner.");
-      return;
-    }
-    tryCount++;
+class Matchmaker extends EventEmitter {
+  constructor(queue) {
+    super();
+    this.queue = queue;
+    this.interval = null;
   }
-  await enqueue(socket.id);
-};
 
-module.exports = { matchUsers };
+  start() {
+    this.interval = setInterval(async () => {
+      const pair = await this.queue.popPair();
+      if (pair.length === 2) {
+        this.emit("match", pair[0], pair[1]);
+      }
+    }, 200);
+  }
+
+  stop() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+  }
+
+  async findPartner(socketId) {
+    await this.queue.enqueue(socketId);
+  }
+}
+
+module.exports = Matchmaker;

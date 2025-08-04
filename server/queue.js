@@ -1,21 +1,60 @@
 const Redis = require("ioredis");
-const redis = new Redis(process.env.REDIS_URL);
 
-const QUEUE_KEY = "gistnaija_chat_queue";
+class Queue {
+  constructor(redisUrl) {
+    this.redis = new Redis(redisUrl);
+    this.queueKey = "randomchat_waiting_queue";
+    this.setKey = "randomchat_waiting_set";
+  }
 
-async function enqueue(socketId) {
-  const inQueue = await redis.lrange(QUEUE_KEY, 0, -1);
-  if (!inQueue.includes(socketId)) {
-    await redis.rpush(QUEUE_KEY, socketId);
+  async enqueue(socketId) {
+    const exists = await this.redis.sismember(this.setKey, socketId);
+    if (!exists) {
+      await this.redis.rpush(this.queueKey, socketId);
+      await this.redis.sadd(this.setKey, socketId);
+    }
+  }
+
+  async dequeue(socketId) {
+    await this.redis.lrem(this.queueKey, 0, socketId);
+    await this.redis.srem(this.setKey, socketId);
+  }
+
+  async getLength() {
+    return this.redis.llen(this.queueKey);
+  }
+
+  async popPair() {
+    const popPairScript = `
+      local first = redis.call('lpop', KEYS[1])
+      if not first then
+          return {}
+      end
+      local second = redis.call('lpop', KEYS[1])
+      if not second then
+          redis.call('lpush', KEYS[1], first)
+          return {}
+      end
+      redis.call('srem', KEYS[2], first)
+      redis.call('srem', KEYS[2], second)
+      return {first, second}
+    `;
+    try {
+      const result = await this.redis.eval(popPairScript, 2, this.queueKey, this.setKey);
+      return result || [];
+    } catch (e) {
+      console.error("popPair error:", e);
+      return [];
+    }
+  }
+
+  async getWaitingUsers() {
+    return this.redis.lrange(this.queueKey, 0, -1);
+  }
+
+  disconnect() {
+    this.redis.disconnect();
   }
 }
 
-async function dequeue() {
-  return await redis.lpop(QUEUE_KEY);
-}
-
-async function removeFromQueue(socketId) {
-  await redis.lrem(QUEUE_KEY, 0, socketId);
-}
-
-module.exports = { enqueue, dequeue, removeFromQueue };
+module.exports = Queue;
