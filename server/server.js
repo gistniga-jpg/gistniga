@@ -6,7 +6,7 @@ const Queue = require("./queue");
 const Matchmaker = require("./matchmaker");
 
 const app = express();
-app.use('/server/public', express.static(path.join(__dirname, 'icon')));
+app.use('/AD', express.static(path.join(__dirname, 'AD'))); // CHANGED: serve ad images
 app.use(express.static(path.join(__dirname, 'public')));
 
 const server = http.createServer(app);
