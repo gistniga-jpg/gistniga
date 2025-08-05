@@ -9,6 +9,10 @@ const Matchmaker = require(__dirname + "/matchmaker.js");
 const app = express();
 app.use(compression());
 
+app.get('/', (req, res) => {
+  res.redirect('/chat.html');
+});
+
 // Serve static files with caching headers
 app.use('/AD', express.static(path.join(__dirname, 'AD'), { maxAge: '1d', etag: false }));
 app.use('/server/public', express.static(path.join(__dirname, 'icon'), { maxAge: '1d', etag: false }));
