@@ -2,25 +2,18 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const path = require("path");
-<<<<<<< HEAD
-const compression = require("compression"); // CHANGED
-
-const app = express();
-app.use(compression()); // CHANGED
-// LogRocket CDN 허용
-
-app.use('/server/public', express.static(path.join(__dirname, 'icon'), { maxAge: '1d', etag: false })); // CHANGED
-// 기본 static 경로 제한
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d', etag: false })); // CHANGED
-=======
+const compression = require("compression");
 const Queue = require("./queue");
 const Matchmaker = require("./matchmaker");
 
 const app = express();
-app.use('/AD', express.static(path.join(__dirname, 'AD'))); // CHANGED: serve ad images
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(compression());
 
->>>>>>> d9c21162c1f8489a49e3c5d33fbb1236189c0634
+// Serve static files with caching headers
+app.use('/AD', express.static(path.join(__dirname, 'AD'), { maxAge: '1d', etag: false }));
+app.use('/server/public', express.static(path.join(__dirname, 'icon'), { maxAge: '1d', etag: false }));
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d', etag: false }));
+
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: "*" },
@@ -38,26 +31,7 @@ const ROOMS_KEY = "randomchat_rooms";
 let totalConnections = 0;
 let totalBytes = 0;
 
-<<<<<<< HEAD
-// 새 클라이언트 접속
-io.on("connection", (socket) => {
- // === 접속 기기 로그 추가 ===
-  const ua = socket.handshake.headers['user-agent'] || '';
-  const isMobile = /Mobi|Android|iPhone|iPad|iPod|Windows Phone|IEMobile|BlackBerry/i.test(ua);
-  console.log(`[CONNECT] ${socket.id} | ${isMobile ? 'MOBILE' : 'PC'} | UA: ${ua}`);
-
-
-  totalConnections++;  
-
-  // 메시지 발생 시 전송량 계산
-  socket.on("chat message", (roomId, msg) => {
-    totalBytes += Buffer.byteLength(msg, "utf8");
-  });
-});
-
-// 10초마다 모니터링 로그 출력 // CHANGED
-=======
->>>>>>> d9c21162c1f8489a49e3c5d33fbb1236189c0634
+// Monitoring log
 setInterval(() => {
   console.log(
     `[MONITOR] 현재 접속자: ${io.engine.clientsCount}, 누적 접속자: ${totalConnections}, 누적 전송량: ${totalBytes} bytes`
@@ -71,8 +45,6 @@ async function createRoom(roomId, users) {
 async function removeRoom(roomId) {
   await queue.redis.hdel(ROOMS_KEY, roomId);
 }
-
-
 
 matchmaker.on("match", (socketId1, socketId2) => {
   const socket1 = io.sockets.sockets.get(socketId1);
@@ -98,15 +70,15 @@ matchmaker.on("match", (socketId1, socketId2) => {
 async function handleLeave(socket) {
   const roomId = socket.roomId;
   if (roomId) {
-    socket.leave(roomId); // CHANGED: ensure leaving socket.io room
-    socket.roomId = null; // CHANGED
+    socket.leave(roomId);
+    socket.roomId = null;
     const users = await queue.redis.hget(ROOMS_KEY, roomId);
     if (users) {
       const otherId = JSON.parse(users).find((id) => id !== socket.id);
       const otherSocket = io.sockets.sockets.get(otherId);
       if (otherSocket) {
-        otherSocket.leave(roomId); // CHANGED
-        otherSocket.roomId = null; // CHANGED
+        otherSocket.leave(roomId);
+        otherSocket.roomId = null;
         otherSocket.emit("partner left");
       }
       await removeRoom(roomId);
