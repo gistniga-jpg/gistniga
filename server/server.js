@@ -3,8 +3,8 @@ const http = require("http");
 const { Server } = require("socket.io");
 const path = require("path");
 const compression = require("compression");
-const Queue = require("./queue");
-const Matchmaker = require("./matchmaker");
+const Queue = require(__dirname + "/queue.js");
+const Matchmaker = require(__dirname + "/matchmaker.js");
 
 const app = express();
 app.use(compression());
