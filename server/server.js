@@ -10,7 +10,13 @@ const app = express();
 app.use(compression());
 
 app.get('/', (req, res) => {
-  res.redirect('/chat.html');
+  const ua = req.headers['user-agent'] || '';
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod|Windows Phone|IEMobile|BlackBerry/i.test(ua);
+  if (isMobile) {
+    res.redirect('/mobile.html');
+  } else {
+    res.redirect('/chat.html');
+  }
 });
 
 // Serve static files with caching headers

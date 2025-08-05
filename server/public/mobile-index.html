@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    if (window.location.pathname === "/index.html" || window.location.pathname === "/") {
+      window.location.replace("/mobile-index.html");
+    }
+  }
+</script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>GistNiga - Mobile</title>
+  <link rel="stylesheet" href="./mobile.css" />
+</head>
+<body>
+  <div class="m-container">
+    <h1>GistNiga</h1>
+    <p>You never know who you'll meet. Start chatting now!</p>
+    <h2>✨ Features:</h2>
+    <ul>
+      <li>✅ Anonymous 1:1 Random Chat</li>
+      <li>✅ Instant start without sign-up</li>
+      <li>✅ Compatible with Mobile and PC</li>
+    </ul>
+    <button onclick="location.href='./mobile.html'">💬 Start Chatting</button>
+  </div>
+</body>
+</html>

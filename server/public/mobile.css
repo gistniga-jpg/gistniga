@@ -89,27 +89,22 @@ body, html {
   height: 100dvh;              /* CHANGED: 실제 뷰포트 높이 기준 */
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   background: #181e12;
-  overflow: hidden;            /* 키보드 올라올 때 넘침 방지 */
 }
 
 #m-messages {
-  flex: 1 1 auto;
+  flex: 1; /* Grow to fill available space */
   overflow-y: auto;
   list-style: none;
-  margin: -30px 0 8px 0;
-  padding: 10px 0 6px 0;
+  margin: 0;
+  padding: 10px;
   background: #212d25;
   border-radius: 12px;
   font-size: 1.15em;
   font-weight:600;
-  min-height: 220px;
-  max-height: 48vh;
   display: flex;
   flex-direction: column;
   gap: 2px;
-margin-bottom: 30px;
 }
 #m-messages li {
     padding: 7px 19px;
