@@ -161,3 +161,13 @@ server.listen(PORT, () => {
   console.log("서버 시작:", PORT);
   matchmaker.start();
 });
+
+process.on("SIGINT", async () => {
+  console.log("서버 종료 중...");
+  matchmaker.stop();
+  await queue.disconnect();
+  server.close(() => {
+    console.log("서버 종료.");
+    process.exit(0);
+  });
+});
