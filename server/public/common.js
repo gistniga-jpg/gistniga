@@ -153,11 +153,9 @@ function setupGistChat(config) {
   });
 
   // Initial state
-  document.addEventListener('DOMContentLoaded', function() {
-    mainButton.disabled = true;
-    appendMessage("🔍 Finding your anonymous gist buddy…");
-    socket.emit("find partner");
-  });
+  mainButton.disabled = true;
+  appendMessage("🔍 Finding your anonymous gist buddy…");
+  socket.emit("find partner");
 
   return { sendMessage };
 }
