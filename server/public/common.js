@@ -1,8 +1,16 @@
-
-const socket = io();
+let socket; // CHANGED: allow graceful load
+try {
+  socket = io(); // CHANGED: initialize socket if available
+} catch (e) {
+  console.error('Socket.io client failed to load', e); // CHANGED
+}
 
 function setupGistChat(config) {
   const { mainButton, messageInput, sendButton, messages, adPopupOverlay, adCloseBtn, adStorageKey, adPopupInterval } = config;
+  if (!socket) { // CHANGED: prevent usage without socket
+    console.error('Socket not initialized'); // CHANGED
+    return; // CHANGED
+  }
 
   let chatting = false, myRoomId = null;
   let typingTimeout = null;
@@ -156,12 +164,12 @@ function setupGistChat(config) {
 
 // === Global Listeners (outside the main function) ===
 window.onerror = function (message, source, lineno, colno, error) {
-  socket.emit("client error", { message, source, lineno, colno });
+  if (socket) socket.emit("client error", { message, source, lineno, colno }); // CHANGED
 };
 window.addEventListener("unhandledrejection", (event) => {
-  socket.emit("client error", { message: event.reason?.message || "Promise rejection" });
+  if (socket) socket.emit("client error", { message: event.reason?.message || "Promise rejection" }); // CHANGED
 });
 
 setInterval(() => {
-  socket.emit("client ping", { ts: Date.now(), url: location.href });
+  if (socket) socket.emit("client ping", { ts: Date.now(), url: location.href }); // CHANGED
 }, 5000);
