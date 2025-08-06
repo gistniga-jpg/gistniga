@@ -93,7 +93,11 @@ function setupGistChat(config) {
       }
   }
 
-  sendButton.onclick = sendMessage;
+  sendButton.addEventListener('mousedown', function(e) {
+    e.preventDefault(); // 중요: 버튼이 포커스를 훔쳐가지 못하게 막습니다.
+    sendMessage();
+  });
+
   messageInput.onkeydown = function(e) {
     if (e.key === "Enter" && !sendButton.disabled) {
         e.preventDefault();
