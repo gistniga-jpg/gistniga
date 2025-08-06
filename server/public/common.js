@@ -42,17 +42,16 @@ function setupGistChat(config) {
   }
 
   // UI State Logic
-  function setChattingState(isChatting) {
-    chatting = isChatting;
-    mainButton.textContent = isChatting ? "End Gist" : "Start Gist";
-    mainButton.classList.toggle("end", isChatting);
-    mainButton.disabled = false;
-    messageInput.disabled = !isChatting;
-    sendButton.disabled = !isChatting;
-    if (!isChatting) {
-        messageInput.value = "";
-        showTyping(false);
-    }
+  function resetChat() {
+    chatting = false;
+    myRoomId = null;
+    isTyping = false;
+    clearTimeout(typingTimeout);
+    messages.innerHTML = ''; // 메시지 목록을 비웁니다.
+    messageInput.value = '';
+    messageInput.disabled = true;
+    sendButton.disabled = true;
+    if (partnerStatus) partnerStatus.textContent = "Connecting...";
   }
 
   function finishChat() {
