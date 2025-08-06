@@ -128,6 +128,11 @@ function setupGistChat(config) {
     appendMessage("✅ Connected!", 'system');
     setChattingState(true);
     messageInput.focus();
+    
+    // 명시적으로 버튼들을 활성화하여 어떤 경우에도 비활성화되지 않도록 보장합니다.
+    mainButton.disabled = false;
+    messageInput.disabled = false;
+    sendButton.disabled = false;
   });
 
   socket.on("partner left", function() {
