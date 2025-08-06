@@ -36,27 +36,23 @@ document.addEventListener('DOMContentLoaded', () => {
     setupGistChat(config, showChat, showStart);
 
     // --- ULTIMATE LAYOUT FIX: JS-controlled Height ---
-    // This function ensures the active screen always perfectly fits the visible viewport.
     const setScreenHeight = () => {
         if (!window.visualViewport) return;
         
         const vh = window.visualViewport.height;
-        // Apply the height to both screens. The inactive one is display:none anyway.
-        if (config.startScreen) {
-            config.startScreen.style.height = `${vh}px`;
-        }
-        if (config.chatScreen) {
-            config.chatScreen.style.height = `${vh}px`;
+        // Apply the height to the active screen's container
+        const activeScreen = document.querySelector('.screen[style*="display: flex"]');
+        if(activeScreen) {
+            activeScreen.style.height = `${vh}px`;
         }
     };
 
     if (window.visualViewport) {
-        // Set initial height on load
         setScreenHeight();
-        // Update height whenever the viewport changes (keyboard, address bar etc.)
         window.visualViewport.addEventListener('resize', setScreenHeight);
     } else {
-        // Basic fallback for older browsers that don't support visualViewport
-        if(config.startScreen) config.startScreen.style.height = '100dvh';
+        // Fallback for older browsers
+        const screens = document.querySelectorAll('.screen');
+        screens.forEach(s => s.style.height = '100dvh');
     }
 });

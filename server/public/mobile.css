@@ -9,9 +9,9 @@
 html, body {
     width: 100%;
     height: 100%;
-    background-color: #181e12;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    color: #dcf8c6;
+    background-color: #151a17; /* Match PC background */
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    color: #e7fef2;
     overflow: hidden; /* Critical for preventing body scroll */
 }
 
@@ -21,54 +21,64 @@ html, body {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 20px;
-    /* Height is now controlled by JS for chat screen, and defaults for start screen */
+    background-color: #212d25; /* Match PC container background */
+    /* Height is controlled by JS */
 }
 
 /* Start Screen: Centered content */
 #start-screen {
     justify-content: center;
     gap: 24px;
+    padding: 20px;
 }
 
 #nigeria-flag-mobile {
-    width: 72px;
-    height: 48px;
+    width: 100%;
+    max-width: 430px; /* Match PC width */
+    height: 45px;
     display: flex;
-    border: 1.5px solid #212d25;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
 }
 #nigeria-flag-mobile .green { background: #008753; flex: 1; }
 #nigeria-flag-mobile .white { background: #fff; flex: 1; }
 
 .app-title {
-    font-size: 2.2rem;
-    font-weight: 700;
-}
-.app-tagline {
-    font-size: 1rem;
-    color: #9be8a0;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    color: #dcf8c6;
+    border-bottom: 1.5px solid #008753;
+    padding-bottom: 10px;
+    width: 100%;
+    max-width: 430px;
     text-align: center;
 }
+
+.app-tagline {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #dcf8c6;
+    text-align: center;
+}
+
 #m-mainButton.start {
-    width: 100%;
-    max-width: 320px;
-    height: 50px;
-    border-radius: 25px;
-    background: #22d75a;
-    color: #181e12;
+    height: 44px;
+    width: 90%;
+    max-width: 300px;
     font-size: 1.1rem;
     font-weight: 600;
-    border: none;
+    border-radius: 88px;
+    border: 1px solid #22d75a;
+    background: #22d75a;
+    color: #171a13;
     cursor: pointer;
 }
 
 /* Chat Screen: The main interactive view */
 #chat-screen {
     justify-content: flex-start;
-    padding: 0; /* Padding will be on inner elements */
-    /* Height is dynamically set by mobile.js */
+    padding: 0;
 }
 
 .chat-header {
@@ -77,25 +87,27 @@ html, body {
     justify-content: space-between;
     align-items: center;
     padding: 12px 20px;
-    background-color: #1c2316;
+    background-color: #1a241b; /* Match PC controls background */
     flex-shrink: 0;
 }
+
 .partner-status {
     font-size: 1.1rem;
     font-weight: 600;
 }
+
 #leave-button.end {
     padding: 8px 18px;
     border-radius: 16px;
-    background: #4a4a4a;
-    color: #fff;
+    background: #ffeb3b;
+    color: #171a13;
     font-weight: 600;
     border: none;
     cursor: pointer;
 }
 
 #m-messages {
-    flex: 1; /* This is the key for filling space */
+    flex: 1;
     width: 100%;
     overflow-y: auto;
     list-style: none;
@@ -103,29 +115,33 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    /* Helps prevent scroll jumps when new content is added above the viewport */
-    overflow-anchor: auto; 
+    background-color: #1c241e; /* Match PC messages background */
 }
 
 #m-messages li {
     padding: 10px 16px;
-    border-radius: 20px;
+    border-radius: 12px;
     max-width: 85%;
     word-wrap: break-word;
     line-height: 1.4;
+    font-size: 15px;
+    font-weight: 600;
 }
+
 .self-message {
-    background: #2a5a38;
+    background: #1f4d2b;
     color: #fff;
     align-self: flex-end;
-    border-radius: 20px 20px 4px 20px;
+    border-radius: 12px 12px 4px 12px;
 }
+
 .other-message {
-    background: #2c352e;
-    color: #e1ffad;
+    background: #253828;
+    color: #fff830;
     align-self: flex-start;
-    border-radius: 20px 20px 20px 4px;
+    border-radius: 12px 12px 12px 4px;
 }
+
 .system-message, .typing-message {
     align-self: center;
     background: transparent;
@@ -139,22 +155,25 @@ html, body {
     display: flex;
     gap: 10px;
     padding: 12px 20px;
-    background-color: #1c2316;
+    background-color: #1a241b; /* Match PC controls background */
     flex-shrink: 0;
 }
+
 #m-messageInput {
     flex: 1;
     height: 44px;
     padding: 0 18px;
     border-radius: 22px;
-    border: none;
-    background: #2c352e;
+    border: 1px solid #22d75a;
+    background: #181e12;
     color: #e7fef2;
     font-size: 1rem;
 }
+
 #m-messageInput:focus {
-    outline: 1.5px solid #22d75a;
+    outline: none;
 }
+
 #m-sendButton {
     height: 44px;
     padding: 0 24px;
@@ -165,6 +184,7 @@ html, body {
     border: none;
     cursor: pointer;
 }
+
 #m-sendButton:disabled {
     background: #333;
     color: #666;
