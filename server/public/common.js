@@ -55,7 +55,7 @@ function setupGistChat(config) {
   }
 
   function finishChat() {
-    setChattingState(false);
+    resetChat(); // 채팅 UI를 초기화하고 메시지 목록을 비웁니다.
     let count = Number(localStorage.getItem(adStorageKey) || 0) + 1;
     if (count >= adPopupInterval) {
       showAdPopup();
