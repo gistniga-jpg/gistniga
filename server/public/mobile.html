@@ -4,49 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gist ₦iga - Mobile Chat</title>
-    <meta name="description" content="Gist lets you vibe, chat, and meet new people — totally random, completely anonymous.">
-    <meta name="keywords" content="random chat, anonymous chat, gist app, Nigerian chat, online chat, meet new people">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="theme-color" content="#181e12">
     <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
-
-    <!-- Screen 1: Start Screen (Visible by default) -->
-    <div id="start-screen" class="screen">
-        <div id="nigeria-flag-mobile">
-            <div class="green"></div>
-            <div class="white"></div>
-            <div class="green"></div>
+    <div class="container">
+        <div class="header-wrap">
+            <div id="nigeria-flag-mobile">
+                <div class="green"></div>
+                <div class="white"></div>
+                <div class="green"></div>
+            </div>
+            <h1>Gist ₦iga</h1>
+            <div id="introMessage">
+                Welcome! Start chatting anonymously with a gist buddy
+            </div>
         </div>
-        <h1 class="app-title">Gist ₦iga</h1>
-        <p class="app-tagline">Start chatting anonymously with a gist buddy.</p>
-        <button id="m-mainButton" class="start">Start Gist</button>
-    </div>
 
-    <!-- Screen 2: Chat Screen (Hidden by default) -->
-    <div id="chat-screen" class="screen" style="display: none;">
-        <header class="chat-header">
-            <button id="leave-button" class="end">End</button>
-            <h2 class="partner-status">Connecting...</h2>
-        </header>
         <ul id="m-messages"></ul>
+
         <div class="m-chat-controls">
-            <input type="text" id="m-messageInput" placeholder="Type a message..." autocomplete="off" disabled>
+            <button id="m-mainButton" class="start">Start Gist</button>
+            <input type="text" id="m-messageInput" placeholder="Type a message..." disabled />
             <button id="m-sendButton" disabled>Send</button>
         </div>
     </div>
 
-    <!-- Ad Popup (Remains the same, but will be triggered by JS) -->
     <div id="adPopupOverlay" style="display: none;">
-        <div id="adPopupBox">
-            <img src="/AD/1.png" alt="Ad image">
-            <button id="adCloseBtn">×</button>
-            <div class="ad-links">
-                <a href="https://t.me/your_channel" target="_blank">Telegram</a>
-                <a href="https://wa.me/your_whatsapp_number" target="_blank">WhatsApp</a>
-            </div>
-        </div>
+        <!-- Ad content can be placed here -->
     </div>
 
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
@@ -57,6 +41,5 @@
     </script>
     <script src="common.js"></script>
     <script src="mobile.js"></script>
-
 </body>
 </html>
