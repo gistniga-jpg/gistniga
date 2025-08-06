@@ -74,6 +74,7 @@ function setupGistChat(config) {
       socket.emit("find partner");
     } else {
       if (myRoomId) socket.emit("leave room", myRoomId);
+      appendMessage("👋 You have left the chat.", "system");
       finishChat();
     }
   };
