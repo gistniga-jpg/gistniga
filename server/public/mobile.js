@@ -33,21 +33,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Initialize Core Chat Logic ---
-    // Pass config and screen transition functions to the core logic
     setupGistChat(config, showChat, showStart);
 
-    // --- LAYOUT FIX: Handle Keyboard/Viewport Resizing ---
-    const chatScreen = config.chatScreen;
-    if (window.visualViewport && chatScreen) {
-        const setChatScreenHeight = () => {
-            // Set the chat screen height to the exact visible area
-            chatScreen.style.height = `${window.visualViewport.height}px`;
-        };
+    // --- ULTIMATE LAYOUT FIX: JS-controlled Height ---
+    // This function ensures the active screen always perfectly fits the visible viewport.
+    const setScreenHeight = () => {
+        if (!window.visualViewport) return;
         
-        // Set initial height
-        setChatScreenHeight();
+        const vh = window.visualViewport.height;
+        // Apply the height to both screens. The inactive one is display:none anyway.
+        if (config.startScreen) {
+            config.startScreen.style.height = `${vh}px`;
+        }
+        if (config.chatScreen) {
+            config.chatScreen.style.height = `${vh}px`;
+        }
+    };
 
-        // Update height whenever the viewport changes (keyboard appears/disappears)
-        window.visualViewport.addEventListener('resize', setChatScreenHeight);
+    if (window.visualViewport) {
+        // Set initial height on load
+        setScreenHeight();
+        // Update height whenever the viewport changes (keyboard, address bar etc.)
+        window.visualViewport.addEventListener('resize', setScreenHeight);
+    } else {
+        // Basic fallback for older browsers that don't support visualViewport
+        if(config.startScreen) config.startScreen.style.height = '100dvh';
     }
 });
