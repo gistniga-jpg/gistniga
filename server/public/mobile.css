@@ -1,279 +1,226 @@
+/* Global Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-body, html {
-  margin: 0;
-  padding: 0;
-  background: #181e12;
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-  width: 100vw;
-  min-height: 100vh;
-}
-#nigeria-flag-mobile {
-  width: auto;         /* 모바일에 맞는 국기 가로 */
-  height: 55px;
-  display: flex;
-  margin: 0px auto 7px auto;  /* 중앙 정렬 + 여백 */
-  border: 1.5px solid #212d25; /* 테두리 */
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 7px #0001;
-}
-#nigeria-flag-mobile div {
-  flex: 1;
-  height: 100%;
-}
-#introMessage {
-    margin: -10px 0 0px 0;
-    margin-bottom: 10px;
-    text-align: center;
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: #181e12;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
     color: #dcf8c6;
-    font-size: 0.8em;
-    font-weight: 600;
-    letter-spacing: -0.4px;
-    margin-bottom: 33px;
-    margin-top: 60px;
-    padding-bottom: 6px;
-}
-#nigeria-flag-mobile .green { background: #008753; }
-#nigeria-flag-mobile .white { background: #fff; }
-#adPopupOverlay {
-  position: fixed;
-  left: 0; top: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #212d25cc;
-  z-index: 10000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.25s;
-}
-#adPopupBox {
-  background: #181e12;
-  border-radius: 16px;
-  box-shadow: 0 2px 18px #000b;
-  padding: 0;
-  min-width: 200px;
-  max-width: 96vw;
-  min-height: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-#adPopupBox img {
-  width: 98vw;
-  max-width: 390px;
-  height: 80px;
-  border-radius: 12px;
-  margin: 0 auto;
-}
-.ad-close-btn {
-  position: absolute;
-  top: -36px;
-  right: 2vw;
-  z-index: 10;
-  background: #fff;
-  color: #111;
-  border: none;
-  border-radius: 14px;
-  font-size: 18px;
-  width: 28px;
-  height: 28px;
-  cursor: pointer;
-  font-weight: bold;
-  box-shadow: 1 2px 8px #0003;
+    overflow: hidden; /* Prevents accidental scrolling */
 }
 
-/* 기존 .m-container → vh 대신 안정적인 높이 사용 */
-.m-container {
-  width: 100vw;
-  height: 100dvh;              /* CHANGED: 실제 뷰포트 높이 기준 */
-  display: flex;
-  flex-direction: column;
-  background: #181e12;
+/* Screen Layout */
+.screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100dvh; /* Use dynamic viewport height */
+    padding: 20px;
+}
+
+/* Start Screen Specific Styles */
+#start-screen {
+    gap: 16px;
+}
+
+#nigeria-flag-mobile {
+    width: 80px;
+    height: 50px;
+    display: flex;
+    border: 1.5px solid #212d25;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#nigeria-flag-mobile .green { background: #008753; flex: 1; }
+#nigeria-flag-mobile .white { background: #fff; flex: 1; }
+
+.app-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #dcf8c6;
+}
+
+.app-tagline {
+    font-size: 1rem;
+    color: #9be8a0;
+    text-align: center;
+}
+
+#m-mainButton.start {
+    width: 100%;
+    max-width: 300px;
+    height: 50px;
+    border-radius: 99px;
+    background: #22d75a;
+    color: #181e12;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+/* Chat Screen Specific Styles */
+#chat-screen {
+    justify-content: flex-start; /* Align items to the top */
+}
+
+.chat-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #212d25;
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.partner-status {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+#leave-button.end {
+    padding: 8px 16px;
+    border-radius: 99px;
+    background: #ffeb3b;
+    color: #181e12;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
 }
 
 #m-messages {
-  flex: 1; /* Grow to fill available space */
-  overflow-y: auto;
-  list-style: none;
-  margin: 0;
-  padding: 10px;
-  background: #212d25;
-  border-radius: 12px;
-  font-size: 1.15em;
-  font-weight:600;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+    flex: 1; /* Take up all available space */
+    width: 100%;
+    overflow-y: auto;
+    list-style: none;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
+
 #m-messages li {
-    padding: 7px 19px;
-    margin: 4px 0;
-    border-radius: 12px;
-    max-width: 100%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 80%;
     word-wrap: break-word;
-    border: 1px solid #262;
-    background: #222c22;
-    color: #dcf8c6;
-    position: relative;
-margin-left: 6px;
-white-space: pre-wrap;   /* 추가 */
-    word-break: break-word;  /* 추가 */
-
+    white-space: pre-wrap;
 }
+
 .self-message {
-  background: #1f4d2b;
-  color: #fff;
-  align-self: flex-end;
-  margin-left: auto;
-  text-align: right;
-  border: 1.5px solid #22d75a;
-  border-radius: 13px 13px 11px 7px;
+    background: #1f4d2b;
+    color: #fff;
+    align-self: flex-end;
+    border-radius: 18px 18px 4px 18px;
 }
+
 .other-message {
-  background: #253828;
-  color: #fff830;
-  align-self: flex-start;
-  margin-right: auto;
-  border: 1.5px solid #22d75a;
-  border-radius: 13px 13px 7px 13px;
+    background: #253828;
+    color: #fff830;
+    align-self: flex-start;
+    border-radius: 18px 18px 18px 4px;
 }
+
 .typing-message {
-  display: flex;
-  align-items: center;
-  color: #dcf8c6;
-  font-weight: 600;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  margin: 7px 0 7px 0;
+    color: #9be8a0;
+    font-style: italic;
 }
-.typing-message .typing-label {
-  margin-right: 7px;
-  color: #dcf8c6;
-}
-.typing-dots {
-  display: inline-block;
-  height: 16px;
-  vertical-align: middle;
-}
-.typing-dots span {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  margin: 0 2px;
-  background: #22d75a;
-  border-radius: 50%;
-  opacity: 0.45;
-  animation: typingBlink 0.8s infinite;
-}
-.typing-dots span:nth-child(2) { animation-delay: 0.13s; }
-.typing-dots span:nth-child(3) { animation-delay: 0.23s; }
-@keyframes typingBlink {
-  0%, 80%, 100% { opacity: 0.2; }
-  40% { opacity: 1; }
-}
+
 .m-chat-controls {
-  display: flex;
-  padding: 0 0 7px 0;
-  gap: 0;
-  background: #181e12;
-  border: none;
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    padding: 10px 0;
+    flex-shrink: 0; /* Prevent controls from shrinking */
 }
-#m-messageInput::placeholder {
-  color: #9be8a0a1;              /* 모바일 전용 색상 */
-  font-size: 1rem;
-}
+
 #m-messageInput {
-  flex: 1 1 auto;
-  min-width: 0;
-  height: 44px;
-  padding: 0 40px;
-  border-radius: 99px;
-  border: 1.5px solid #22d75a;
-  background: #181e12;
-  color: #e7fef2;
-  font-size: 1.07em;
-  margin: 0 7px 0 0;
-  outline: none;
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-font-weight: 630;
+    flex: 1;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 99px;
+    border: 1.5px solid #22d75a;
+    background: #212d25;
+    color: #e7fef2;
+    font-size: 1rem;
 }
+
 #m-messageInput:focus {
-  border-color: #22d75a;
-  background: #212d25;
+    outline: none;
 }
+
 #m-sendButton {
-  width: 70px;
-  height: 44px;
-  border-radius: 99px;
-  background: #22d75a;
-  color: #181e12;
-  font-size: 1.02em;
-  font-weight: bold;
-  border: none;
-  transition: background 0.13s, color 0.13s;
+    height: 44px;
+    padding: 0 20px;
+    border-radius: 99px;
+    background: #22d75a;
+    color: #181e12;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
 }
+
 #m-sendButton:disabled {
-  background: #23241f !important;
-  color: #999 !important;
+    background: #23241f !important;
+    color: #999 !important;
+    cursor: not-allowed;
 }
-#m-mainButton {
-  width: 30vw;
-  margin: 0px auto 16px auto;
-    padding: initial;
-  border-radius: 99px;
-  background: #22d75a;
-  color: #181e12;
-  font-size: 0.98em;
-  font-weight: bold;
-  border: none;
-  box-shadow: 0 2px 7px #0001;
-        height: 38px;
-    margin-right: 5px;
 
-}
-#m-mainButton.end {
-  background: #ffeb3b;
-  color: #181e12;
-        height: 38px;
-}
-#m-mainButton:disabled {
-  background: #23241f !important;
-  color: #999 !important;
-        height: 38px;
-}
-@media (max-width: 450px) {
-  .m-header { font-size: 2rem; 
-        color: #dcf8c6;
-    font-weight: 600;
-    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-text-align: center;
-border-bottom: 1.5px solid #008753;
-        margin-bottom: -55px;
-        margin-top: 5px;
-    padding-bottom: 6px;
-   
-}
-  #m-messages { min-height: 420px; font-size: 1em; }
-  #m-messageInput, #m-sendButton { height: 38px; font-size: 0.98em; }
-  #m-mainButton { font-size: 0.98em; }
-}
+/* Ad Popup Styles (Simplified) */
 #adPopupOverlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  z-index: 2000;
-  background: rgba(0,0,0,0.18);  /* 선택: 팝업 밖 흐림효과 */
-  display: none;
-  align-items: center;
-  justify-content: center;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
-window.addEventListener('focusin', () => {
-  document.body.style.position = 'fixed';  // 키보드 올라올 때 스크롤 고정
-});
-window.addEventListener('focusout', () => {
-  document.body.style.position = '';
-});
 
+#adPopupBox {
+    background: #181e12;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
+#adPopupBox img {
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+#adCloseBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.ad-links a {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.ad-links a[href*="t.me"] { background: #229ED9; color: #fff; }
+.ad-links a[href*="wa.me"] { background: #25D366; color: #fff; }
