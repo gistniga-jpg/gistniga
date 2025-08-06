@@ -3,73 +3,73 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
 }
 
 html, body {
     width: 100%;
     height: 100%;
     background-color: #181e12;
-    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     color: #dcf8c6;
-    overflow: hidden; /* Prevents accidental scrolling */
+    overflow: hidden; /* Critical for preventing body scroll */
 }
 
-/* Screen Layout */
+/* Screen Layout: Base for both start and chat screens */
 .screen {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100dvh; /* Use dynamic viewport height */
     padding: 20px;
+    /* Height is now controlled by JS for chat screen, and defaults for start screen */
 }
 
-/* Start Screen Specific Styles */
+/* Start Screen: Centered content */
 #start-screen {
-    gap: 16px;
+    justify-content: center;
+    gap: 24px;
+    height: 100dvh;
 }
 
 #nigeria-flag-mobile {
-    width: 80px;
-    height: 50px;
+    width: 72px;
+    height: 48px;
     display: flex;
     border: 1.5px solid #212d25;
     border-radius: 8px;
     overflow: hidden;
 }
-
 #nigeria-flag-mobile .green { background: #008753; flex: 1; }
 #nigeria-flag-mobile .white { background: #fff; flex: 1; }
 
 .app-title {
-    font-size: 2.5rem;
-    font-weight: 600;
-    color: #dcf8c6;
+    font-size: 2.2rem;
+    font-weight: 700;
 }
-
 .app-tagline {
     font-size: 1rem;
     color: #9be8a0;
     text-align: center;
 }
-
 #m-mainButton.start {
     width: 100%;
-    max-width: 300px;
+    max-width: 320px;
     height: 50px;
-    border-radius: 99px;
+    border-radius: 25px;
     background: #22d75a;
     color: #181e12;
     font-size: 1.1rem;
-    font-weight: bold;
+    font-weight: 600;
     border: none;
     cursor: pointer;
 }
 
-/* Chat Screen Specific Styles */
+/* Chat Screen: The main interactive view */
 #chat-screen {
-    justify-content: flex-start; /* Align items to the top */
+    justify-content: flex-start;
+    padding: 0; /* Padding will be on inner elements */
+    /* Height is dynamically set by mobile.js */
 }
 
 .chat-header {
@@ -77,150 +77,97 @@ html, body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #212d25;
-    flex-shrink: 0; /* Prevent header from shrinking */
+    padding: 12px 20px;
+    background-color: #1c2316;
+    flex-shrink: 0;
 }
-
 .partner-status {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
 }
-
 #leave-button.end {
-    padding: 8px 16px;
-    border-radius: 99px;
-    background: #ffeb3b;
-    color: #181e12;
-    font-weight: bold;
+    padding: 8px 18px;
+    border-radius: 16px;
+    background: #4a4a4a;
+    color: #fff;
+    font-weight: 600;
     border: none;
     cursor: pointer;
 }
 
 #m-messages {
-    flex: 1; /* Take up all available space */
+    flex: 1; /* This is the key for filling space */
     width: 100%;
     overflow-y: auto;
     list-style: none;
-    padding: 10px 0;
+    padding: 16px 20px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
+    /* Helps prevent scroll jumps when new content is added above the viewport */
+    overflow-anchor: auto; 
 }
 
 #m-messages li {
-    padding: 10px 15px;
-    border-radius: 18px;
-    max-width: 80%;
+    padding: 10px 16px;
+    border-radius: 20px;
+    max-width: 85%;
     word-wrap: break-word;
-    white-space: pre-wrap;
+    line-height: 1.4;
 }
-
 .self-message {
-    background: #1f4d2b;
+    background: #2a5a38;
     color: #fff;
     align-self: flex-end;
-    border-radius: 18px 18px 4px 18px;
+    border-radius: 20px 20px 4px 20px;
 }
-
 .other-message {
-    background: #253828;
-    color: #fff830;
+    background: #2c352e;
+    color: #e1ffad;
     align-self: flex-start;
-    border-radius: 18px 18px 18px 4px;
+    border-radius: 20px 20px 20px 4px;
 }
-
-.typing-message {
-    color: #9be8a0;
+.system-message, .typing-message {
+    align-self: center;
+    background: transparent;
+    color: #8a9a8c;
+    font-size: 0.9rem;
     font-style: italic;
 }
 
 .m-chat-controls {
     width: 100%;
     display: flex;
-    gap: 8px;
-    padding: 10px 0;
-    flex-shrink: 0; /* Prevent controls from shrinking */
+    gap: 10px;
+    padding: 12px 20px;
+    background-color: #1c2316;
+    flex-shrink: 0;
 }
-
 #m-messageInput {
     flex: 1;
     height: 44px;
     padding: 0 18px;
-    border-radius: 99px;
-    border: 1.5px solid #22d75a;
-    background: #212d25;
+    border-radius: 22px;
+    border: none;
+    background: #2c352e;
     color: #e7fef2;
     font-size: 1rem;
 }
-
 #m-messageInput:focus {
-    outline: none;
+    outline: 1.5px solid #22d75a;
 }
-
 #m-sendButton {
     height: 44px;
-    padding: 0 20px;
-    border-radius: 99px;
+    padding: 0 24px;
+    border-radius: 22px;
     background: #22d75a;
     color: #181e12;
-    font-weight: bold;
+    font-weight: 600;
     border: none;
     cursor: pointer;
 }
-
 #m-sendButton:disabled {
-    background: #23241f !important;
-    color: #999 !important;
+    background: #333;
+    color: #666;
     cursor: not-allowed;
 }
-
-/* Ad Popup Styles (Simplified) */
-#adPopupOverlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-#adPopupBox {
-    background: #181e12;
-    padding: 20px;
-    border-radius: 16px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-#adPopupBox img {
-    max-width: 100%;
-    border-radius: 8px;
-}
-
-#adCloseBtn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-}
-
-.ad-links a {
-    display: inline-block;
-    margin: 0 10px;
-    padding: 10px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.ad-links a[href*="t.me"] { background: #229ED9; color: #fff; }
-.ad-links a[href*="wa.me"] { background: #25D366; color: #fff; }
