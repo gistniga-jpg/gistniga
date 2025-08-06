@@ -74,8 +74,8 @@ function setupGistChat(config) {
       socket.emit("find partner");
     } else {
       if (myRoomId) socket.emit("leave room", myRoomId);
-      finishChat();
-      appendMessage("👋 You have left the chat.", "system"); // 순서 변경: UI를 초기화한 후 메시지를 표시
+      finishChat(); // UI 초기화 먼저
+      appendMessage("👋 You have left the chat.", "system"); // 메시지 표시
     }
   };
 
