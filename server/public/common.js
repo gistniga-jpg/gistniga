@@ -42,31 +42,19 @@ function setupGistChat(config) {
   }
 
   // UI State Logic
-  """  // UI State Logic
   function setChattingState(isChatting) {
     chatting = isChatting;
     mainButton.textContent = isChatting ? 'Leave' : 'Start Gist';
     mainButton.className = isChatting ? 'leave' : 'start';
-    mainButton.disabled = false; // Ensure the main button is always enabled after state change
+    mainButton.disabled = false;
     messageInput.disabled = !isChatting;
     sendButton.disabled = !isChatting;
     if (isChatting) {
       messageInput.placeholder = "Say something nice...";
+      messageInput.focus();
     } else {
       messageInput.placeholder = "Type a message...";
     }
-  }
-
-  function resetChat() {
-    chatting = false;
-    myRoomId = null;
-    isTyping = false;
-    clearTimeout(typingTimeout);
-    messages.innerHTML = ''; // 메시지 목록을 비웁니다.
-    messageInput.value = '';
-    messageInput.disabled = true;
-    sendButton.disabled = true;
-    if (partnerStatus) partnerStatus.textContent = "Connecting...";
   }
 
   function finishChat() {
@@ -77,7 +65,7 @@ function setupGistChat(config) {
       count = 0;
     }
     localStorage.setItem(adStorageKey, count);
-  }""
+  }
 
   // Event Handlers
   function handleMainButtonClick() {
@@ -108,18 +96,17 @@ function setupGistChat(config) {
       }
   }
 
-  // Use click event for reliability
   mainButton.addEventListener('click', handleMainButtonClick);
   sendButton.addEventListener('click', sendMessage);
 
-  messageInput.onkeydown = function(e) {
+  messageInput.addEventListener('keydown', function(e) {
     if (e.key === "Enter" && !sendButton.disabled) {
         e.preventDefault();
         sendMessage();
     }
-  };
+  });
 
-  messageInput.oninput = () => {
+  messageInput.addEventListener('input', () => {
     if (!chatting || !myRoomId) return;
     if (!isTyping) {
       isTyping = true;
@@ -130,7 +117,7 @@ function setupGistChat(config) {
       isTyping = false;
       socket.emit('stop typing', myRoomId);
     }, 1500);
-  };
+  });
 
   // Socket Listeners
   socket.on('typing', () => showTyping(true));
@@ -141,12 +128,6 @@ function setupGistChat(config) {
     messages.innerHTML = "";
     appendMessage("✅ Connected!", 'system');
     setChattingState(true);
-    messageInput.focus();
-    
-    // 명시적으로 버튼들을 활성화하여 어떤 경우에도 비활성화되지 않도록 보장합니다.
-    mainButton.disabled = false;
-    messageInput.disabled = false;
-    sendButton.disabled = false;
   });
 
   socket.on("partner left", function() {
