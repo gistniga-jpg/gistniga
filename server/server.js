@@ -140,17 +140,6 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", async () => {
     console.log("[DISCONNECT]", socket.id);
-    const roomId = socket.roomId;
-    if (roomId) {
-        const users = await queue.redis.hget(ROOMS_KEY, roomId);
-        if (users) {
-            const otherId = JSON.parse(users).find((id) => id !== socket.id);
-            const otherSocket = io.sockets.sockets.get(otherId);
-            if (otherSocket) {
-                otherSocket.emit("partner left");
-            }
-        }
-    }
     await handleLeave(socket);
     await queue.dequeue(socket.id);
   });
