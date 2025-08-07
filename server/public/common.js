@@ -42,6 +42,21 @@ function setupGistChat(config) {
   }
 
   // UI State Logic
+  """  // UI State Logic
+  function setChattingState(isChatting) {
+    chatting = isChatting;
+    mainButton.textContent = isChatting ? 'Leave' : 'Start Gist';
+    mainButton.className = isChatting ? 'leave' : 'start';
+    mainButton.disabled = false; // Ensure the main button is always enabled after state change
+    messageInput.disabled = !isChatting;
+    sendButton.disabled = !isChatting;
+    if (isChatting) {
+      messageInput.placeholder = "Say something nice...";
+    } else {
+      messageInput.placeholder = "Type a message...";
+    }
+  }
+
   function resetChat() {
     chatting = false;
     myRoomId = null;
@@ -62,7 +77,7 @@ function setupGistChat(config) {
       count = 0;
     }
     localStorage.setItem(adStorageKey, count);
-  }
+  }""
 
   // Event Handlers
   mainButton.onclick = function() {
