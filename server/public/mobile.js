@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     const config = {
-        mainButton: document.getElementById("m-mainButton"),
-        messageInput: document.getElementById("m-messageInput"),
-        sendButton: document.getElementById("m-sendButton"),
-        messages: document.getElementById("m-messages"),
+        mainButton: document.getElementById("mainButton"),
+        messageInput: document.getElementById("messageInput"),
+        sendButton: document.getElementById("sendButton"),
+        messages: document.getElementById("messages"),
         adPopupOverlay: document.getElementById('adPopupOverlay'),
         adCloseBtn: document.getElementById('adCloseBtn'),
         adStorageKey: 'adPopupCountMobile',
