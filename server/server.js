@@ -19,10 +19,10 @@ app.get('/', (req, res) => {
   }
 });
 
-// Serve static files with caching headers
-app.use('/AD', express.static(path.join(__dirname, 'AD'), { maxAge: '1d', etag: false }));
-app.use('/server/public', express.static(path.join(__dirname, 'icon'), { maxAge: '1d', etag: false }));
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d', etag: false }));
+// Serve static files without caching for development
+app.use('/AD', express.static(path.join(__dirname, 'AD')));
+app.use('/server/public', express.static(path.join(__dirname, 'icon')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 const server = http.createServer(app);
 const io = new Server(server, {
