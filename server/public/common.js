@@ -97,7 +97,11 @@ function setupGistChat(config) {
   }
 
   mainButton.addEventListener('click', handleMainButtonClick);
-  sendButton.addEventListener('click', sendMessage);
+  
+  sendButton.addEventListener('mousedown', function(e) {
+    e.preventDefault(); // Prevents the button from taking focus from the input
+    sendMessage();
+  });
 
   messageInput.addEventListener('keydown', function(e) {
     if (e.key === "Enter" && !sendButton.disabled) {
