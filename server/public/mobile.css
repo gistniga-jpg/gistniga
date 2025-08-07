@@ -10,7 +10,7 @@ html, body {
 .container {
     display: flex;
     flex-direction: column;
-    height: 100dvh; /* Use dynamic viewport height */
+    height: 100%; /* Use percentage to fill parent */
     width: 100%;
     background-color: #212d25;
     box-sizing: border-box;
