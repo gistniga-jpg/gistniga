@@ -165,7 +165,7 @@ ul#messages li {
   box-shadow: 0 -1px 6px #0003;
   border-top: 1.5px solid #242;
   width: 100%;
-  position: sticky;
+  position: relative;
   bottom: 0;
   left: 0;
   min-height: 52px;

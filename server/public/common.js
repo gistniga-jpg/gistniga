@@ -80,7 +80,7 @@ function setupGistChat(config) {
   }""
 
   // Event Handlers
-  mainButton.onclick = function() {
+  function handleMainButtonClick() {
     if (!chatting) {
       mainButton.disabled = true;
       messages.innerHTML = ''; // Clear previous messages
@@ -88,10 +88,10 @@ function setupGistChat(config) {
       socket.emit("find partner");
     } else {
       if (myRoomId) socket.emit("leave room", myRoomId);
-      finishChat(); // UI 초기화 먼저
-      appendMessage("👋 You have left the chat.", "system"); // 메시지 표시
+      finishChat();
+      appendMessage("👋 You have left the chat.", "system");
     }
-  };
+  }
 
   function sendMessage() {
       const msg = messageInput.value.trim();
@@ -108,10 +108,9 @@ function setupGistChat(config) {
       }
   }
 
-  sendButton.addEventListener('mousedown', function(e) {
-    e.preventDefault(); // 중요: 버튼이 포커스를 훔쳐가지 못하게 막습니다.
-    sendMessage();
-  });
+  // Use click event for reliability
+  mainButton.addEventListener('click', handleMainButtonClick);
+  sendButton.addEventListener('click', sendMessage);
 
   messageInput.onkeydown = function(e) {
     if (e.key === "Enter" && !sendButton.disabled) {
