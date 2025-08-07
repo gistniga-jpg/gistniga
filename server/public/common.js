@@ -87,21 +87,18 @@ function setupGistChat(config) {
         appendMessage(msg, 'self');
         socket.emit("chat message", myRoomId, msg);
         messageInput.value = "";
-        messageInput.focus();
         if (isTyping) {
           isTyping = false;
           socket.emit('stop typing', myRoomId);
           clearTimeout(typingTimeout);
         }
       }
+      // Refocus the input after a short delay to keep the keyboard open
+      setTimeout(() => messageInput.focus(), 0);
   }
 
   mainButton.addEventListener('click', handleMainButtonClick);
-  
-  sendButton.addEventListener('mousedown', function(e) {
-    e.preventDefault(); // Prevents the button from taking focus from the input
-    sendMessage();
-  });
+  sendButton.addEventListener('click', sendMessage);
 
   messageInput.addEventListener('keydown', function(e) {
     if (e.key === "Enter" && !sendButton.disabled) {
