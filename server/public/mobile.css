@@ -53,11 +53,15 @@ h1 {
 }
 
 #m-messages li {
-    padding: 7px 14px;
+   padding: 7px 14px;
     margin: 4px 0;
     border-radius: 12px;
     max-width: 82%;
     word-wrap: break-word;
+    border: 1px solid #262;
+    background: #222c22;
+    color: #dcf8c6;
+    position: relative;
 }
 
 .self-message { background: #1f4d2b; color: #fff; align-self: flex-end; margin-left: auto; }
@@ -98,6 +102,7 @@ h1 {
     background: #181e12;
     color: #e7fef2;
     margin: 0 10px;
+    font-weight: 500;
 }
 
 #m-sendButton {

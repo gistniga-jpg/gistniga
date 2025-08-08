@@ -44,7 +44,7 @@ function setupGistChat(config) {
   // UI State Logic
   function setChattingState(isChatting) {
     chatting = isChatting;
-    mainButton.textContent = isChatting ? 'Leave' : 'Start Gist';
+    mainButton.textContent = isChatting ? 'End Gist' : 'Start Gist';
     mainButton.className = isChatting ? 'leave' : 'start';
     mainButton.disabled = false;
     messageInput.disabled = !isChatting;

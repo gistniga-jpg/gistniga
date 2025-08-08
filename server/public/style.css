@@ -191,7 +191,6 @@ ul#messages li {
   box-shadow: 0 2px 7px #1c262044;
   background: #22d75a;
   color: #171a13;
-  border: 1px solid #22d75a;
   font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
 }
 #mainButton.end {
