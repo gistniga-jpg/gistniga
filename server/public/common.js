@@ -79,8 +79,8 @@ Spread the word about gistniga to your friends 🚀", "system");
     } else {
       if (myRoomId) socket.emit("leave room", myRoomId);
       finishChat();
-      appendMessage("👋 “You left the gist. Hit ‘Start Gist’ to get matched again!”
-🔄, "system");
+      appendMessage("👋 “You left the gist. Hit ‘Start Gist’ to get matched again!
+🔄", "system");
     }
   }
 
@@ -130,7 +130,7 @@ Spread the word about gistniga to your friends 🚀", "system");
   socket.on("partner found", function(roomId) {
     myRoomId = roomId;
     messages.innerHTML = "";
-    appendMessage(“🔥 Connected! You never know what kind of gist you’ll get… Dare to chat? 🍃”, 'system');
+    appendMessage("🔥 Connected! You never know what kind of gist you’ll get… Dare to chat? 🍃", 'system');
     setChattingState(true);
   });
 
