@@ -94,6 +94,16 @@ function setupGistChat(config) {
           isTyping = false;
           socket.emit('stop typing', myRoomId);
           clearTimeout(typingTimeout);
+setTimeout(() => {
+    messageInput.focus();
+    // iOS Safari에서 강제 트릭
+    if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        let val = messageInput.value;
+        messageInput.value = '';
+        messageInput.value = val;
+    }
+}, 100);
+
         }
       }
       // Refocus the input after a short delay to keep the keyboard open
