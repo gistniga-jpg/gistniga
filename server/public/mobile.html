@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gist ₦iga - Mobile Chat</title>
     <link rel="stylesheet" href="mobile.css">
+
+<head>
+  <script>
+    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      window.location.replace('./mobile.html');
+    } else {
+      window.location.replace('./chat.html');
+    }
+  </script>
+
+
 </head>
 <body>
     <div class="container">
