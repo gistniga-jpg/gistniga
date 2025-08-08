@@ -72,15 +72,12 @@ function setupGistChat(config) {
     if (!chatting) {
       mainButton.disabled = true;
       messages.innerHTML = ''; // Clear previous messages
-      appendMessage("🔍 Searching for your anonymous partner…
-The more users, the faster the match!
-Spread the word about gistniga to your friends 🚀", "system");
+      appendMessage("🔍 Finding a partner...", "system");
       socket.emit("find partner");
     } else {
       if (myRoomId) socket.emit("leave room", myRoomId);
       finishChat();
-      appendMessage("👋 “You left the gist. Hit ‘Start Gist’ to get matched again!
-🔄", "system");
+      appendMessage("👋 You have left the chat.", "system");
     }
   }
 
@@ -130,12 +127,12 @@ Spread the word about gistniga to your friends 🚀", "system");
   socket.on("partner found", function(roomId) {
     myRoomId = roomId;
     messages.innerHTML = "";
-    appendMessage("🔥 Connected! You never know what kind of gist you’ll get… Dare to chat? 🍃", 'system');
+    appendMessage("✅ Connected!", 'system');
     setChattingState(true);
   });
 
   socket.on("partner left", function() {
-    appendMessage("🚶 Partner bailed—don’t worry, the next one might just be your perfect match! 🔄", "system");
+    appendMessage("🚶 Partner has left.", "system");
     finishChat();
   });
 
