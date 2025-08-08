@@ -90,7 +90,8 @@ h1 {
 }
 
 #m-mainButton.end {
-    background: #ffeb3b;
+      background: #ffeb3b;    /* 노란색 → 원하는 색상으로 변경 */
+  color: #181e12;     
 }
 
 #m-messageInput {
@@ -125,8 +126,8 @@ h1 {
   margin-left: auto !important;
   margin-right: 0 !important;
   text-align: right !important;
-  background: #1f4d2b;
+    background: #222c22;
   color: #fff;
-  border: 1.5px solid #22d75a;
+ border: 1px solid #262;
   border-radius: 13px 13px 11px 7px;
 }

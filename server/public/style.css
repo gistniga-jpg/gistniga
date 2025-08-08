@@ -194,9 +194,8 @@ ul#messages li {
   font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
 }
 #mainButton.end {
-  background: #ffeb3b;
-  color: #171a13;
-  border: 1px solid #ffeb3b;
+    background: #ffeb3b;    /* 노란색 → 원하는 색상으로 변경 */
+  color: #181e12;     
 }
 #mainButton:disabled,
 #sendButton:disabled {
