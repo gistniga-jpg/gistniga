@@ -72,8 +72,10 @@ function setupGistChat(config) {
     if (!chatting) {
       mainButton.disabled = true;
       messages.innerHTML = ''; // Clear previous messages
-      appendMessage("🔍 Searching for your anonymous partner…
-The more users, the faster the match! Spread the word about gistniga to your friends 🚀", "system");
+     appendMessage(
+      "🔍 Searching for your anonymous partner... The more users, the faster the match! Spread the word about gistniga to your friends 🚀",
+      "system"
+    );
       socket.emit("find partner");
     } else {
       if (myRoomId) socket.emit("leave room", myRoomId);
