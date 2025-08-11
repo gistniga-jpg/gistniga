@@ -1,0 +1,133 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #151a17;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Use percentage to fill parent */
+    width: 100%;
+    background-color: #212d25;
+    box-sizing: border-box;
+}
+
+.header-wrap {
+    padding: 10px;
+    border-bottom: 1px solid #008753;
+}
+
+#nigeria-flag-mobile {
+    height: 45px;
+    display: flex;
+    border-radius: 10px;
+    overflow: hidden;
+}
+#nigeria-flag-mobile .green { background: #008753; flex: 1; }
+#nigeria-flag-mobile .white { background: #fff; flex: 1; }
+
+h1 {
+    text-align: center;
+    color: #dcf8c6;
+    font-size: 2rem;
+    margin: 10px 0;
+}
+
+#introMessage {
+    text-align: center;
+    color: #dcf8c6;
+    font-size: 1.1em;
+}
+
+#m-messages {
+    flex: 1; /* This is the key */
+    overflow-y: auto;
+    list-style: none;
+    padding: 10px;
+    background: #1c241e;
+    margin: 0;
+}
+
+#m-messages li {
+   padding: 7px 14px;
+    margin: 4px 0;
+    border-radius: 12px;
+    max-width: 82%;
+    word-wrap: break-word;
+    border: 1px solid #262;
+    background: #222c22;
+    color: #dcf8c6;
+    position: relative;
+}
+
+.self-message { background: #1f4d2b; color: #fff; align-self: flex-end; margin-left: auto; }
+.other-message { background: #253828; color: #fff830; align-self: flex-start; }
+.system-message { align-self: center; background: transparent; color: #8a9a8c; }
+.typing-message { align-self: flex-start; background: transparent; color: #8a9a8c; font-style: italic; }
+
+.m-chat-controls {
+    display: flex;
+    padding: 10px;
+    background: #1a241b;
+}
+
+#m-mainButton, #m-sendButton {
+    height: 44px;
+    border-radius: 22px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#m-mainButton {
+    background: #22d75a;
+    color: #171a13;
+    padding: 0 20px;
+}
+
+#m-mainButton.end {
+      background: #ffeb3b;    /* 노란색 → 원하는 색상으로 변경 */
+  color: #181e12;     
+}
+
+#m-messageInput {
+    flex: 1;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 22px;
+    border: 1px solid #22d75a;
+    background: #181e12;
+    color: #e7fef2;
+    margin: 0 10px;
+    font-weight: 500;
+}
+
+#m-sendButton {
+    background: #22d75a;
+    color: #181e12;
+    padding: 0 24px;
+}
+
+#m-mainButton:disabled, #m-sendButton:disabled {
+    background: #333;
+    color: #666;
+    cursor: not-allowed;
+}
+#m-messages {
+  display: flex;
+  flex-direction: column;
+}
+#m-messages .self-message {
+  align-self: flex-end !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  text-align: right !important;
+    background: #222c22;
+  color: #fff;
+ border: 1px solid #262;
+  border-radius: 13px 13px 11px 7px;
+}

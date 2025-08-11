@@ -1,0 +1,112 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<script src="chat-redirect.js"></script>
+
+
+
+<head>
+ 
+
+<!-- 기본 메타 -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="index, follow" />
+<meta name="description" content="Gist lets you vibe, chat, and meet new people — totally random, completely anonymous. Say hi to someone new, anytime." />
+<meta name="keywords" content="random chat, anonymous chat, gist app, Nigerian chat, online chat, meet new people" />
+<meta name="author" content="Gist Team" />
+<meta name="language" content="en" />
+
+<!-- Open Graph (for Facebook, WhatsApp etc) -->
+<meta property="og:title" content="Gist - Chat Freely, Meet Instantly" />
+<meta property="og:description" content="Vibe and gist with random strangers. Made for Nigeria, open to the world." />
+<meta property="og:image" content="https://gistniga.com/og-image.png" />
+<meta property="og:url" content="https://gistniga.com" />
+<meta property="og:type" content="website" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Gist - Chat Freely, Meet Instantly" />
+<meta name="twitter:description" content="Join Gist to meet, chat, and vibe — totally anonymous and always open." />
+<meta name="twitter:image" content="https://gistniga.com/og-image.png" />
+
+
+<!-- 기본 favicon -->
+<link rel="icon" href="/favicon.ico">
+
+<!-- 테마 색상 -->
+<meta name="theme-color" content="#22d75a" />
+<meta name="mobile-web-app-capable" content="yes">
+
+
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gist Niga - Anonymous Chat Room</title>
+  <link rel="stylesheet" href="style.css" />
+ 
+
+
+</head>
+<body>
+  <div class="container">
+    <div class="header-wrap">
+      <div id="nigeria-flag">
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="green"></div>
+      </div>
+      <h1>Gist ₦iga</h1>
+<div id="introMessage">
+  Push Start Gist for unlimited 1:1 anonymous chats… things could get wild! 😏🔥
+</div>
+    </div>
+    
+    <!-- === 광고 팝업 위치: 타이틀 바로 아래 === -->
+<!-- === 광고 팝업 위치: 타이틀 바로 아래 === -->
+<div id="adPopupOverlay" style="display: none; flex-direction: column;">
+  <div id="adPopupBox">
+    <div style="margin-top:14px; height:100px; margin-bottom: -50px; text-align:center;">
+      <div style="position: relative; display: inline-block;">
+        <!-- 광고 이미지는 링크 없이 단독 노출 -->
+        <img src="/AD/1.png" alt="Ad image" style="max-width:430px; height:100px; margin-top:-52px; border-radius: 12px;" />
+        <button class="ad-close-btn" id="adCloseBtn" type="button"
+          style="position: absolute; top: -52px; right: 0px; z-index: 10; background: #202f44; color: #e7fef2; border: none; border-radius: 12px; font-size: 20px; width: 30px; height: 30px; cursor: pointer; font-weight: bold; box-shadow: 1 2px 8px #0003;">
+          ×
+        </button>
+      </div>
+      <!-- === 버튼 2개 추가 === -->
+      <div style="display: flex; justify-content: center; gap: 18px; margin-top: 18px;">
+        <a href="https://t.me/your_channel" target="_blank"
+           style="background: #229ED9; color: #fff; font-weight: 600; border: none; border-radius: 7px; padding: 9px 24px; font-size: 16px; text-decoration: none; box-shadow: 0 2px 8px #0001; display: inline-block; transition: background 0.15s;">
+          Telegram
+        </a>
+        <a href="https://wa.me/your_whatsapp_number" target="_blank"
+           style="background: #25D366; color: #fff; font-weight: 600; border: none; border-radius: 7px; padding: 9px 24px; font-size: 16px; text-decoration: none; box-shadow: 0 2px 8px #0001; display: inline-block; transition: background 0.15s;">
+          WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+    <ul id="messages"></ul>
+    <div class="chat-controls">
+      <button id="mainButton" class="start">Start Gist</button>
+      <input type="text" id="messageInput" placeholder="Type a message..." disabled />
+      <button id="sendButton" disabled>Send</button>
+    </div>
+  </div>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script>
+    if (typeof io === 'undefined') {
+      document.write('<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"><\\/script>'); // CHANGED
+    }
+  </script> <!-- CHANGED: fallback for socket.io -->
+  <script src="common.js"></script>
+  <script src="app.js"></script>
+
+
+</body>
+</html>

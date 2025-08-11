@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gist ₦iga - Mobile Chat</title>
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header-wrap">
+            <div id="nigeria-flag-mobile">
+                <div class="green"></div>
+                <div class="white"></div>
+                <div class="green"></div>
+            </div>
+            <h1>Gist ₦iga</h1>
+            <div id="introMessage">
+                Push Start Gist for unlimited 1:1 anonymous chats… things could get wild! 😏🔥
+            </div>
+        </div>
+
+        <ul id="m-messages"></ul>
+
+        <div class="m-chat-controls">
+            <button id="m-mainButton" class="start">Start Gist</button>
+            <input type="text" id="m-messageInput" placeholder="Type a message..." disabled />
+            <button id="m-sendButton" disabled>Send</button>
+        </div>
+    </div>
+
+    <div id="adPopupOverlay" style="display: none;">
+        <!-- Ad content can be placed here -->
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script>
+        if (typeof io === 'undefined') {
+            document.write('<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"><\/script>');
+        }
+    </script>
+    <script src="common.js"></script>
+    <script src="mobile.js"></script>
+</body>
+</html>

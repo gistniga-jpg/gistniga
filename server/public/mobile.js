@@ -1,0 +1,13 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const config = {
+        mainButton: document.getElementById("m-mainButton"),
+        messageInput: document.getElementById("m-messageInput"),
+        sendButton: document.getElementById("m-sendButton"),
+        messages: document.getElementById("m-messages"),
+        adPopupOverlay: document.getElementById('adPopupOverlay'),
+        adCloseBtn: document.getElementById('adCloseBtn'),
+        adStorageKey: 'adPopupCountMobile',
+        adPopupInterval: 100
+    };
+    setupGistChat(config);
+});
