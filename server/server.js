@@ -19,7 +19,15 @@ app.get('/', (req, res) => {
   }
 });
 
-// Serve static files with caching headers
+// CHANGED: 정적 경로에 없더라도 두 페이지는 반드시 서빙되도록 명시 라우트 추가
+app.get('/chat.html', (req, res) => { // CHANGED
+  res.sendFile(path.join(__dirname, 'chat.html')); // CHANGED
+});
+app.get('/mobile.html', (req, res) => { // CHANGED
+  res.sendFile(path.join(__dirname, 'mobile.html')); // CHANGED
+});
+
+// Serve static files with caching headers (원본 유지)
 app.use('/AD', express.static(path.join(__dirname, 'AD'), { maxAge: '1d', etag: false }));
 app.use('/server/public', express.static(path.join(__dirname, 'icon'), { maxAge: '1d', etag: false }));
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d', etag: false }));
@@ -41,7 +49,7 @@ const ROOMS_KEY = "randomchat_rooms";
 let totalConnections = 0;
 let totalBytes = 0;
 
-// Monitoring log
+// Monitoring log (원본 유지)
 setInterval(() => {
   console.log(
     `[MONITOR] 현재 접속자: ${io.engine.clientsCount}, 누적 접속자: ${totalConnections}, 누적 전송량: ${totalBytes} bytes`
