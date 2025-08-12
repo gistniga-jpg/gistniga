@@ -12,6 +12,7 @@ function setupGistChat(config) {
 
   let chatting = false, myRoomId = null, isTyping = false;
   let typingTimeout = null;
+  let hasAutoMatched = false; // Flag to ensure auto-match runs only once
 
   // Ad Popup Logic
   function showAdPopup() {
@@ -59,6 +60,7 @@ function setupGistChat(config) {
 
   function finishChat() {
     setChattingState(false);
+    hasAutoMatched = false; // Allow auto-matching for the next session
     let count = Number(localStorage.getItem(adStorageKey) || 0) + 1;
     if (count >= adPopupInterval) {
       showAdPopup();
@@ -128,16 +130,9 @@ function setupGistChat(config) {
 
   // Socket Listeners
   socket.on('connect', () => {
-    // Automatically start finding a partner once connected
-    if (!chatting) {
-      handleMainButtonClick();
-    }
-  });
-
-  // Socket Listeners
-  socket.on('connect', () => {
-    // Automatically start finding a partner once connected
-    if (!chatting) {
+    // Automatically start finding a partner once connected, but only once per page load.
+    if (!chatting && !hasAutoMatched) {
+      hasAutoMatched = true;
       handleMainButtonClick();
     }
   });
@@ -150,11 +145,13 @@ function setupGistChat(config) {
     messages.innerHTML = "";
     appendMessage("🔥 Connected! You never know what kind of gist you’ll get… Dare to chat? 🍃", 'system');
     setChattingState(true);
+    hasAutoMatched = false; // Allow re-matching after a session ends
   });
 
   socket.on("partner left", function() {
     appendMessage("🚶 Partner bailed—don’t worry, the next one might just be your perfect match! 🔄", "system");
     finishChat();
+    hasAutoMatched = false; // Allow re-matching after a session ends
   });
 
   socket.on("chat message", function(msg) {
