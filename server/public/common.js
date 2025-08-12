@@ -127,6 +127,13 @@ function setupGistChat(config) {
   });
 
   // Socket Listeners
+  socket.on('connect', () => {
+    // Automatically start finding a partner once connected
+    if (!chatting) {
+      handleMainButtonClick();
+    }
+  });
+
   socket.on('typing', () => showTyping(true));
   socket.on('stop typing', () => showTyping(false));
 

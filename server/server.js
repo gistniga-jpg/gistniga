@@ -17,14 +17,14 @@ const app = express();
 app.use(compression());
 
 // --- Basic Routing ---
-// Redirect users to the correct chat interface
+// Serve the correct HTML file directly without redirecting
 app.get('/', (req, res) => {
   const ua = req.headers['user-agent'] || '';
   const isMobile = /Mobi|Android|iPhone|iPad|iPod|Windows Phone|IEMobile|BlackBerry/i.test(ua);
   if (isMobile) {
-    res.redirect('/mobile.html');
+    res.sendFile(path.join(__dirname, 'public', 'mobile.html'));
   } else {
-    res.redirect('/chat.html');
+    res.sendFile(path.join(__dirname, 'public', 'chat.html'));
   }
 });
 
