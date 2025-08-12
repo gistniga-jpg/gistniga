@@ -57,7 +57,7 @@ const io = new Server(server, {
 
 // --- Application Logic ---
 const queue = new Queue(REDIS_URL);
-const matchmaker = new Matchmaker(queue);
+const matchmaker = new Matchmaker(queue, io); // MODIFIED: Pass io instance
 
 let totalConnections = 0;
 let totalBytes = 0;
@@ -88,37 +88,29 @@ async function removeRoom(roomId) {
 }
 
 // --- Matchmaking Logic ---
+// The matchmaker now handles ghost connections, so this logic is simplified.
 matchmaker.on("match", (socketId1, socketId2) => {
   const socket1 = io.sockets.sockets.get(socketId1);
   const socket2 = io.sockets.sockets.get(socketId2);
 
-  if (socket1 && socket2 && socket1.connected && socket2.connected) {
-    const roomId = `room_${uuidv4()}`; // CHANGED: Use UUID for room ID
-    
-    // Use an async IIFE to handle async operations cleanly
-    (async () => {
-        await createRoom(roomId, [socketId1, socketId2]);
-        socket1.join(roomId);
-        socket2.join(roomId);
-        socket1.roomId = roomId;
-        socket2.roomId = roomId;
-        socket1.emit('partner found', roomId);
-        socket2.emit('partner found', roomId);
-        console.log(`[MATCH] ${socketId1} <-> ${socketId2} in ${roomId}`);
-    })();
-
-  } else {
-    // Re-queue any socket that is still connected
-    (async () => {
-        try {
-            if (socket1 && socket1.connected) await queue.enqueue(socketId1);
-            if (socket2 && socket2.connected) await queue.enqueue(socketId2);
-        } catch (error) {
-            console.error('[ERROR] Failed to re-queue disconnected user during match:', error);
-        }
-    })();
-    console.log(`[MATCH FAILED] One or both sockets disconnected. Re-queuing connected sockets.`);
+  // A final check to ensure sockets exist before creating a room.
+  if (!socket1 || !socket2) {
+    console.error("[CRITICAL] Matchmaker emitted a match with a non-existent socket. This should not happen.");
+    return;
   }
+
+  const roomId = `room_${uuidv4()}`;
+  
+  (async () => {
+      await createRoom(roomId, [socketId1, socketId2]);
+      socket1.join(roomId);
+      socket2.join(roomId);
+      socket1.roomId = roomId;
+      socket2.roomId = roomId;
+      socket1.emit('partner found', roomId);
+      socket2.emit('partner found', roomId);
+      console.log(`[MATCH] ${socketId1} <-> ${socketId2} in ${roomId}`);
+  })();
 });
 
 // --- Socket Event Handlers ---

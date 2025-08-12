@@ -15,6 +15,14 @@ class Queue {
     }
   }
 
+  async enqueuePriority(socketId) {
+    const exists = await this.redis.sismember(this.setKey, socketId);
+    if (!exists) {
+      await this.redis.lpush(this.queueKey, socketId);
+      await this.redis.sadd(this.setKey, socketId);
+    }
+  }
+
   async dequeue(socketId) {
     await this.redis.lrem(this.queueKey, 0, socketId);
     await this.redis.srem(this.setKey, socketId);
