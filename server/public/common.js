@@ -15,14 +15,6 @@ function setupGistChat(config) {
   let typingTimeout = null;
   let hasAutoMatched = false;
 
-  function startAutoMatch() {
-    if (!chatting && !hasAutoMatched) {
-      hasAutoMatched = true;
-      console.log('[DEBUG-CLIENT] Calling handleMainButtonClick for auto-match.');
-      handleMainButtonClick();
-    }
-  }
-
   // Ad Popup Logic
   function showAdPopup() {
     if (adPopupOverlay) adPopupOverlay.style.display = 'flex';
@@ -85,10 +77,10 @@ function setupGistChat(config) {
       mainButton.disabled = true;
       messages.innerHTML = ''; // Clear previous messages
      appendMessage(
-      "🔍 Searching for your anonymous partner... The more users, the faster the match! Spread the word about gistniga to your friends 🚀",
+      "🔍 Searching for your anonymous partner...",
       "system"
     );
-      console.log('[DEBUG-CLIENT] Emitting "find partner" event.');
+      console.log('[DEBUG-CLIENT] Emitting "find partner" event from button click.');
       socket.emit("find partner");
     } else {
       if (myRoomId) socket.emit("leave room", myRoomId);
@@ -138,16 +130,28 @@ function setupGistChat(config) {
     }, 1500);
   });
 
-  // Socket Listeners
+  // --- Simplified Auto-Match Logic ---
+  const startMatchmaking = () => {
+    if (!hasAutoMatched) {
+        hasAutoMatched = true;
+        mainButton.disabled = true;
+        messages.innerHTML = '';
+        appendMessage("🔍 Searching for your anonymous partner...", "system");
+        console.log('[DEBUG-CLIENT] Emitting "find partner" for auto-match.');
+        socket.emit("find partner");
+    }
+  };
+
   if (socket.connected) {
     console.log('[DEBUG-CLIENT] Socket already connected. Firing auto-match.');
-    startAutoMatch();
+    startMatchmaking();
   } else {
     socket.on('connect', () => {
       console.log('[DEBUG-CLIENT] Socket connected via event listener. Firing auto-match.');
-      startAutoMatch();
+      startMatchmaking();
     });
   }
+  // --- End of Auto-Match Logic ---
 
   socket.on('typing', () => showTyping(true));
   socket.on('stop typing', () => showTyping(false));
