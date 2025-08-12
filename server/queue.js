@@ -3,6 +3,12 @@ const Redis = require("ioredis");
 class Queue {
   constructor(redisUrl) {
     this.redis = new Redis(redisUrl);
+    this.redis.on('connect', () => {
+      console.log('[REDIS] Successfully connected to Redis.');
+    });
+    this.redis.on('error', (err) => {
+      console.error('[REDIS] Could not connect to Redis:', err);
+    });
     this.queueKey = "randomchat_waiting_queue";
     this.setKey = "randomchat_waiting_set";
   }
