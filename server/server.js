@@ -51,7 +51,7 @@ if (CORS_ORIGIN === "*") {
 const io = new Server(server, {
   cors: { origin: CORS_ORIGIN },
   pingInterval: 25000,
-  pingTimeout: 1200000,
+  pingTimeout: 60000, // REDUCED: From 20 minutes to 60 seconds
   serveClient: true
 });
 
@@ -65,7 +65,7 @@ let totalBytes = 0;
 // Monitoring log
 setInterval(() => {
   console.log(
-    `[MONITOR] 현재 접속자: ${io.engine.clientsCount}, 누적 접속자: ${totalConnections}, 누적 전송량: ${totalBytes} bytes`
+    `[MONITOR] 현재 접속자: ${io.sockets.sockets.size}, 누적 접속자: ${totalConnections}, 누적 전송량: ${totalBytes} bytes`
   );
 }, 10000);
 
