@@ -9,12 +9,6 @@ const Matchmaker = require(__dirname + "/matchmaker.js");
 const app = express();
 app.use(compression());
 
-// CHANGED: 아주 가벼운 접근 로그(PII 없음)
-app.use((req, res, next) => {
-  console.log(`[HTTP] ${req.method} ${req.url}`);
-  next();
-});
-
 app.get('/', (req, res) => {
   const ua = req.headers['user-agent'] || '';
   const isMobile = /Mobi|Android|iPhone|iPad|iPod|Windows Phone|IEMobile|BlackBerry/i.test(ua);
@@ -25,39 +19,14 @@ app.get('/', (req, res) => {
   }
 });
 
-// ===== 정적 파일 서빙 =====
-// 기존에는 public 폴더만 노출했는데, 실제 html/css/js는 프로젝트 루트에 있어 404 가능성 높음
-app.use('/AD', express.static(path.join(__dirname, 'AD'), { maxAge: '1d', etag: false })); // 기존 유지
-app.use('/server/public', express.static(path.join(__dirname, 'icon'), { maxAge: '1d', etag: false })); // 기존 유지
-app.use(express.static(path.join(__dirname), { maxAge: '1d', etag: false })); // CHANGED: 프로젝트 루트 노출
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d', etag: false })); // CHANGED: 혹시 있을지 모를 public도 함께 노출(호환성)
-
-// CHANGED: 정적 서빙 실패 환경 대비, 명시 라우트도 추가
-app.get('/chat.html', (req, res) => res.sendFile(path.join(__dirname, 'chat.html')));
-app.get('/mobile.html', (req, res) => res.sendFile(path.join(__dirname, 'mobile.html')));
-
-// CHANGED: 헬스/메트릭
-app.get('/health', (req, res) => res.status(200).json({ ok: true }));
-// 간단 메트릭 (대기열/온라인/누적)
-let totalConnections = 0;
-let totalBytes = 0;
-app.get('/metrics-basic', async (req, res) => {
-  try {
-    const waiting = await queue.getLength();
-    res.json({
-      online: io.engine.clientsCount,
-      waiting,
-      totalConnections,
-      totalBytes
-    });
-  } catch (e) {
-    res.status(500).json({ error: 'metrics error' });
-  }
-});
+// Serve static files with caching headers
+app.use('/AD', express.static(path.join(__dirname, 'AD'), { maxAge: '1d', etag: false }));
+app.use('/server/public', express.static(path.join(__dirname, 'icon'), { maxAge: '1d', etag: false }));
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d', etag: false }));
 
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: "*" }, // 운영시 도메인 화이트리스트 권장
+  cors: { origin: "*" },
   pingInterval: 25000,
   pingTimeout: 1200000,
   serveClient: true
@@ -69,7 +38,10 @@ const matchmaker = new Matchmaker(queue);
 
 const ROOMS_KEY = "randomchat_rooms";
 
-// Monitoring log (기존 유지)
+let totalConnections = 0;
+let totalBytes = 0;
+
+// Monitoring log
 setInterval(() => {
   console.log(
     `[MONITOR] 현재 접속자: ${io.engine.clientsCount}, 누적 접속자: ${totalConnections}, 누적 전송량: ${totalBytes} bytes`
@@ -174,28 +146,17 @@ io.on("connection", (socket) => {
 });
 
 const PORT = process.env.PORT || 3000;
-// CHANGED: AWS, 도커 등에서 외부 접근 위해 0.0.0.0 바인딩
-server.listen(PORT, "0.0.0.0", () => {
+server.listen(PORT, () => {
   console.log("서버 시작:", PORT);
   matchmaker.start();
 });
 
-// CHANGED: SIGTERM도 함께 처리 (AWS ECS/EB 종료 시 흔함)
-async function gracefulShutdown(signal) {
-  console.log(`서버 종료 중... (${signal})`);
-  try {
-    matchmaker.stop();
-    await queue.disconnect();
-  } catch (e) {
-    console.error("graceful shutdown error:", e);
-  } finally {
-    server.close(() => {
-      console.log("서버 종료.");
-      process.exit(0);
-    });
-    // 안전망 타임아웃
-    setTimeout(() => process.exit(0), 5000).unref();
-  }
-}
-process.on("SIGINT", () => gracefulShutdown("SIGINT"));   // Ctrl+C
-process.on("SIGTERM", () => gracefulShutdown("SIGTERM")); // 플랫폼 종료
+process.on("SIGINT", async () => {
+  console.log("서버 종료 중...");
+  matchmaker.stop();
+  await queue.disconnect();
+  server.close(() => {
+    console.log("서버 종료.");
+    process.exit(0);
+  });
+});
