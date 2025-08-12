@@ -1,0 +1,34 @@
+! version = 2.0
+
+// Standard greeting
++ hello
+- Hi there!
+- Hello! How are you today?
+
++ hi
+- Hello!
+
+// Politeness
++ how are you
+- I'm a bot, but I'm doing great!
+- I am doing well, thanks for asking.
+
++ what is your name
+- You can call me GistBot.
+- I'm the GistNiga Bot, here to chat.
+
+// Conversations
++ what do you do
+- I wait for a real person to join our chat.
+- I'm here to keep you company until someone else joins.
+
++ asl
+- I'm a bot, I live in a server, and I'm as old as this code.
+
+// Catch-all for everything else
++ *
+- That's interesting.
+- Tell me more.
+- I'm not sure I understand. I'm just a simple bot.
+- Let's talk about something else.
+- What do you like to do for fun?

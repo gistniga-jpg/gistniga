@@ -28,6 +28,11 @@ class Queue {
     await this.redis.srem(this.setKey, socketId);
   }
 
+  async isUserInQueue(socketId) {
+    const exists = await this.redis.sismember(this.setKey, socketId);
+    return exists === 1;
+  }
+
   async getLength() {
     return this.redis.llen(this.queueKey);
   }
