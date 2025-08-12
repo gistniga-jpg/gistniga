@@ -46,17 +46,25 @@ class Matchmaker extends EventEmitter {
   }
 
   async findPartner(socketId) {
+    console.log(`[DEBUG] findPartner called for: ${socketId}`);
     await this.queue.enqueue(socketId);
+    console.log(`[DEBUG] ${socketId} enqueued. Setting 5s bot-match timer.`);
 
     // Set a timer to match with a bot if the user is still waiting
     setTimeout(async () => {
+      console.log(`[DEBUG] 5s timer fired for: ${socketId}`);
       try {
         const isWaiting = await this.queue.isUserInQueue(socketId);
+        console.log(`[DEBUG] isUserInQueue for ${socketId}? : ${isWaiting}`);
+
         if (isWaiting) {
           // User is still in the queue, let's match them with a bot
-          console.log(`[BOT MATCH] User ${socketId} has been waiting, matching with bot.`);
+          console.log(`[DEBUG] ${socketId} is still waiting. Attempting to match with bot.`);
           await this.queue.dequeue(socketId); // Remove from queue
           this.emit("match", socketId, this.botId);
+          console.log(`[DEBUG] "match" event emitted for ${socketId} and bot.`);
+        } else {
+          console.log(`[DEBUG] ${socketId} is no longer in queue. Bot match aborted.`);
         }
       } catch (error) {
         console.error(`[ERROR] Failed during bot match timer for socket ${socketId}:`, error);
