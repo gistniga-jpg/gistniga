@@ -3,12 +3,21 @@ const http = require("http");
 const { Server } = require("socket.io");
 const path = require("path");
 const compression = require("compression");
+const { v4: uuidv4 } = require("uuid"); // ADDED: For unique room IDs
 const Queue = require(__dirname + "/queue.js");
 const Matchmaker = require(__dirname + "/matchmaker.js");
+
+// --- Constants ---
+const PORT = process.env.PORT || 3000;
+const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
+const CORS_ORIGIN = process.env.CORS_ORIGIN || "*";
+const ROOMS_KEY = "randomchat_rooms"; // ADDED: Centralized Redis key
 
 const app = express();
 app.use(compression());
 
+// --- Basic Routing ---
+// Redirect users to the correct chat interface
 app.get('/', (req, res) => {
   const ua = req.headers['user-agent'] || '';
   const isMobile = /Mobi|Android|iPhone|iPad|iPod|Windows Phone|IEMobile|BlackBerry/i.test(ua);
@@ -19,81 +28,114 @@ app.get('/', (req, res) => {
   }
 });
 
-// CHANGED: 정적 경로에 없더라도 두 페이지는 반드시 서빙되도록 명시 라우트 추가
-app.get('/chat.html', (req, res) => { // CHANGED
-  res.sendFile(path.join(__dirname, 'chat.html')); // CHANGED
+// Explicitly serve the HTML files from the 'public' directory
+app.get('/chat.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'chat.html')); // FIXED: Point to public folder
 });
-app.get('/mobile.html', (req, res) => { // CHANGED
-  res.sendFile(path.join(__dirname, 'mobile.html')); // CHANGED
+app.get('/mobile.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'mobile.html')); // FIXED: Point to public folder
 });
 
-// Serve static files with caching headers (원본 유지)
+// Serve static files
 app.use('/AD', express.static(path.join(__dirname, 'AD'), { maxAge: '1d', etag: false }));
-app.use('/server/public', express.static(path.join(__dirname, 'icon'), { maxAge: '1d', etag: false }));
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d', etag: false }));
 
+
+// --- Server and Socket.IO Setup ---
 const server = http.createServer(app);
+
+if (CORS_ORIGIN === "*") {
+    console.warn("[SECURITY WARNING] CORS is configured to allow all origins (*). For production, set the CORS_ORIGIN environment variable to your specific frontend domain.");
+}
+
 const io = new Server(server, {
-  cors: { origin: "*" },
+  cors: { origin: CORS_ORIGIN },
   pingInterval: 25000,
   pingTimeout: 1200000,
   serveClient: true
 });
 
-const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
+// --- Application Logic ---
 const queue = new Queue(REDIS_URL);
 const matchmaker = new Matchmaker(queue);
-
-const ROOMS_KEY = "randomchat_rooms";
 
 let totalConnections = 0;
 let totalBytes = 0;
 
-// Monitoring log (원본 유지)
+// Monitoring log
 setInterval(() => {
   console.log(
     `[MONITOR] 현재 접속자: ${io.engine.clientsCount}, 누적 접속자: ${totalConnections}, 누적 전송량: ${totalBytes} bytes`
   );
 }, 10000);
 
+
+// --- Room Management Functions ---
 async function createRoom(roomId, users) {
-  await queue.redis.hset(ROOMS_KEY, roomId, JSON.stringify(users));
+  try {
+    await queue.redis.hset(ROOMS_KEY, roomId, JSON.stringify(users));
+  } catch (error) {
+    console.error(`[ERROR] Failed to create room ${roomId} in Redis:`, error);
+  }
 }
 
 async function removeRoom(roomId) {
-  await queue.redis.hdel(ROOMS_KEY, roomId);
+  try {
+    await queue.redis.hdel(ROOMS_KEY, roomId);
+  } catch (error) {
+    console.error(`[ERROR] Failed to remove room ${roomId} from Redis:`, error);
+  }
 }
 
+// --- Matchmaking Logic ---
 matchmaker.on("match", (socketId1, socketId2) => {
   const socket1 = io.sockets.sockets.get(socketId1);
   const socket2 = io.sockets.sockets.get(socketId2);
 
   if (socket1 && socket2 && socket1.connected && socket2.connected) {
-    const roomId = 'room_' + Math.random().toString(36).slice(2, 10);
-    createRoom(roomId, [socketId1, socketId2]);
-    socket1.join(roomId);
-    socket2.join(roomId);
-    socket1.roomId = roomId;
-    socket2.roomId = roomId;
-    socket1.emit('partner found', roomId);
-    socket2.emit('partner found', roomId);
-    console.log(`[MATCH] ${socketId1} <-> ${socketId2} in ${roomId}`);
+    const roomId = `room_${uuidv4()}`; // CHANGED: Use UUID for room ID
+    
+    // Use an async IIFE to handle async operations cleanly
+    (async () => {
+        await createRoom(roomId, [socketId1, socketId2]);
+        socket1.join(roomId);
+        socket2.join(roomId);
+        socket1.roomId = roomId;
+        socket2.roomId = roomId;
+        socket1.emit('partner found', roomId);
+        socket2.emit('partner found', roomId);
+        console.log(`[MATCH] ${socketId1} <-> ${socketId2} in ${roomId}`);
+    })();
+
   } else {
-    if (socket1 && socket1.connected) queue.enqueue(socketId1);
-    if (socket2 && socket2.connected) queue.enqueue(socketId2);
+    // Re-queue any socket that is still connected
+    (async () => {
+        try {
+            if (socket1 && socket1.connected) await queue.enqueue(socketId1);
+            if (socket2 && socket2.connected) await queue.enqueue(socketId2);
+        } catch (error) {
+            console.error('[ERROR] Failed to re-queue disconnected user during match:', error);
+        }
+    })();
     console.log(`[MATCH FAILED] One or both sockets disconnected. Re-queuing connected sockets.`);
   }
 });
 
+// --- Socket Event Handlers ---
 async function handleLeave(socket) {
   const roomId = socket.roomId;
-  if (roomId) {
+  if (!roomId) return;
+
+  try {
     socket.leave(roomId);
     socket.roomId = null;
-    const users = await queue.redis.hget(ROOMS_KEY, roomId);
-    if (users) {
-      const otherId = JSON.parse(users).find((id) => id !== socket.id);
+
+    const usersJson = await queue.redis.hget(ROOMS_KEY, roomId);
+    if (usersJson) {
+      const users = JSON.parse(usersJson);
+      const otherId = users.find((id) => id !== socket.id);
       const otherSocket = io.sockets.sockets.get(otherId);
+
       if (otherSocket) {
         otherSocket.leave(roomId);
         otherSocket.roomId = null;
@@ -101,6 +143,8 @@ async function handleLeave(socket) {
       }
       await removeRoom(roomId);
     }
+  } catch (error) {
+    console.error(`[ERROR] Failed to handle leave for socket ${socket.id} in room ${roomId}:`, error);
   }
 }
 
@@ -111,12 +155,7 @@ io.on("connection", (socket) => {
   totalConnections++;
 
   socket.on("client error", (data) => {
-    console.log(`[CLIENT ERROR][${socket.id}]`, data);
-  });
-
-  socket.on("client ping", (data) => {
-    console.log(`[CLIENT PING][${socket.id}]`, data);
-    socket.emit("pong");
+    console.error(`[CLIENT ERROR][${socket.id}]`, data);
   });
 
   socket.on("chat message", (roomId, msg) => {
@@ -136,33 +175,42 @@ io.on("connection", (socket) => {
     try {
       await matchmaker.findPartner(socket.id);
     } catch (e) {
-      console.log("find partner error:", e);
-      socket.emit('server error', '매칭 실패');
+      console.error(`[ERROR] find partner error for socket ${socket.id}:`, e);
+      socket.emit('server error', '매칭에 실패했습니다. 잠시 후 다시 시도해주세요.');
     }
   });
 
-  socket.on("leave room", async (roomId) => {
-    console.log("[LEAVE ROOM]", socket.id, roomId);
+  socket.on("leave room", async () => { // roomId is in socket.roomId, no need to pass from client
+    console.log(`[LEAVE ROOM] socket: ${socket.id}, room: ${socket.roomId}`);
     await handleLeave(socket);
   });
 
   socket.on("disconnect", async () => {
-    console.log("[DISCONNECT]", socket.id);
-    await handleLeave(socket);
-    await queue.dequeue(socket.id);
+    console.log(`[DISCONNECT] socket: ${socket.id}, room: ${socket.roomId}`);
+    try {
+        await handleLeave(socket);
+        await queue.dequeue(socket.id);
+    } catch (error) {
+        console.error(`[ERROR] Failed during disconnect for socket ${socket.id}:`, error);
+    }
   });
 });
 
-const PORT = process.env.PORT || 3000;
+// --- Server Start ---
 server.listen(PORT, () => {
-  console.log("서버 시작:", PORT);
+  console.log(`서버 시작: http://localhost:${PORT}`);
   matchmaker.start();
 });
 
+// --- Graceful Shutdown ---
 process.on("SIGINT", async () => {
   console.log("서버 종료 중...");
   matchmaker.stop();
-  await queue.disconnect();
+  try {
+    await queue.disconnect();
+  } catch (error) {
+    console.error("[ERROR] Failed to disconnect queue gracefully:", error);
+  }
   server.close(() => {
     console.log("서버 종료.");
     process.exit(0);
