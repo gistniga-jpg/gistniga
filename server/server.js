@@ -213,16 +213,26 @@ server.listen(PORT, () => {
 });
 
 // --- Graceful Shutdown ---
-process.on("SIGINT", async () => {
-  console.log("서버 종료 중...");
+process.on("SIGINT", () => {
+  console.log("\n[SYSTEM] 종료 신호 수신. 5초 후 강제 종료됩니다.");
+
+  // Stop accepting new work
   matchmaker.stop();
-  try {
-    await queue.disconnect();
-  } catch (error) {
-    console.error("[ERROR] Failed to disconnect queue gracefully:", error);
-  }
-  server.close(() => {
-    console.log("서버 종료.");
-    process.exit(0);
+  server.close((err) => {
+    if (err) {
+      console.error("[SYSTEM] 서버 종료 중 에러:", err);
+      process.exit(1);
+    }
+    console.log("[SYSTEM] HTTP 서버가 정상적으로 닫혔습니다.");
   });
+
+  // Attempt to disconnect from Redis, but don't wait forever
+  queue.disconnect();
+  console.log("[SYSTEM] Redis 연결 종료 시도.");
+
+  // Set a timeout to force exit if graceful shutdown takes too long
+  setTimeout(() => {
+    console.error("[SYSTEM] 정상 종료에 실패하여, 강제로 종료합니다.");
+    process.exit(1);
+  }, 5000).unref(); // .unref() allows the program to exit if this is the only event left.
 });
