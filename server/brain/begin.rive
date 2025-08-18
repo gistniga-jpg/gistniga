@@ -47,6 +47,9 @@
 // Interview: user responds with their name. Try 5 times to get their answer
 // before giving up.
 > topic interview2 includes interview_common
+	+ (hi|hello|hey|yo)
+	- It's nice to meet you! You can tell me your name later if you like. What's on your mind?{topic=random}
+
 	+ * *
 	* <get retry> > <env interview_retry> => {@int giveup}
 	- I only want your first name. {@int help}
