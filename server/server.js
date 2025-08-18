@@ -207,7 +207,7 @@ io.on("connection", (socket) => {
 
 // --- Server Start ---
 server.listen(PORT, () => {
-  console.log(`서버 시작: http://localhost:${PORT}`);
+  console.log(`[FINAL-CHECK] 서버가 이 메시지를 출력한다면, 코드는 완전히 새로 적용된 것입니다. 포트: ${PORT}`);
   chatbot.load();
   matchmaker.start();
 });
