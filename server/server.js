@@ -166,12 +166,18 @@ io.on("connection", (socket) => {
       const users = JSON.parse(usersJson);
       const otherId = users.find((id) => id !== socket.id);
       if (otherId === BOT_ID) {
-        io.to(roomId).emit('typing');
+        io.to(roomId).emit('typing'); // Show bot is "typing"
         const reply = await chatbot.getReply(socket.id, msg);
+        
+        // Simulate a more natural typing delay based on reply length
+        const typingSpeed = 50; // ms per character
+        let typingDelay = 500 + reply.length * typingSpeed;
+        if (typingDelay > 3500) typingDelay = 3500; // Cap at 3.5 seconds
+
         setTimeout(() => {
           io.to(roomId).emit('stop typing');
           io.to(roomId).emit("chat message", reply);
-        }, 500 + Math.random() * 1000);
+        }, typingDelay);
         return;
       }
     }

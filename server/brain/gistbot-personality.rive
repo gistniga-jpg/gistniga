@@ -1,0 +1,31 @@
+! version = 2.0
+
+// More casual greetings
++ hey
+- Hey there! What's up?
+
++ yo
+- Yo! What's good?
+
+// Overwrite the default catch-all to be more engaging
++ *
+- {random}I'm not sure what you mean by that.|Can you say that another way?|That's an interesting thought.|Tell me more about that.{/random}
+- {random}So, what do you do for fun?|Got any plans for the weekend?|What's your favorite movie?{/random}
+
+// A simple topic to demonstrate deeper conversation
++ let's talk about movies
+- I love movies! Though I can't watch them. What's your favorite genre?{topic=movies}
+
+> topic movies
+  + (i like|my favorite is) * 
+  - I like <star> movies too! Any favorite actors or actresses in that genre?
+  
+  + * sucks
+  - Haha, fair enough. What genre do you like then?
+
+  + * 
+  - I haven't heard of that one. Is it good?
+
+  + (quit|stop|enough|let's talk about something else)
+  - Okay, movies are off the table. What's on your mind now?{topic=random}
+< topic
