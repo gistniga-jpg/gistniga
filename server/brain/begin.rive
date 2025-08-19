@@ -62,7 +62,7 @@
 
 	+ *
 	* <get retry> > <env interview_retry> => {@int giveup}
-	- <set tmp=<formal>><add retry=1>Is that a real name? ({@int help})
+	- <set tmp=<formal>><add retry=1>Is that a real name?
 
 	+ [*] @yes [*]
 	% is that a real name *
