@@ -170,9 +170,9 @@ io.on("connection", (socket) => {
         const reply = await chatbot.getReply(socket.id, msg);
         
         // Simulate a more natural typing delay based on reply length
-        const typingSpeed = 50; // ms per character
-        let typingDelay = 500 + reply.length * typingSpeed;
-        if (typingDelay > 3500) typingDelay = 3500; // Cap at 3.5 seconds
+        const typingSpeed = 80; // ms per character (slower)
+        let typingDelay = 800 + reply.length * typingSpeed; // higher base delay
+        if (typingDelay > 5000) typingDelay = 5000; // Cap at 5 seconds
 
         setTimeout(() => {
           io.to(roomId).emit('stop typing');

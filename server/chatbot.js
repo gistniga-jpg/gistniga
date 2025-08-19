@@ -11,7 +11,13 @@ class ChatBot {
     try {
       await this.bot.loadDirectory(brainPath);
       this.bot.sortReplies();
-      console.log('[CHATBOT] Brain loaded successfully.');
+
+      // Set a random name for the bot from a predefined list
+      const botNames = ["Sade", "Adunni", "Adaeze", "Aisha", "Bisi", "Maryam", "Nneka", "Uche", "Zainab", "Temi", "Chioma", "Hadiza", "Yetunde", "Amaka"];
+      const randomName = botNames[Math.floor(Math.random() * botNames.length)];
+      this.bot.setVariable("name", randomName);
+
+      console.log(`[CHATBOT] Brain loaded successfully. My name is ${randomName}.`);
     } catch (error) {
       console.error('[CHATBOT] Error loading brain:', error);
     }
