@@ -45,31 +45,32 @@ class Matchmaker extends EventEmitter {
     }
   }
 
-  async findPartner(socketId) {
-    console.log(`[DEBUG] findPartner called for: ${socketId}`);
-    await this.queue.enqueue(socketId);
-    console.log(`[DEBUG] ${socketId} enqueued. Setting 5s bot-match timer.`);
+  async findPartner(socket) { // Accept the full socket object
+    const socketId = socket.id;
 
-    // Set a timer to match with a bot if the user is still waiting
+    // Enqueue the user for a chance to match with a human.
+    await this.queue.enqueue(socketId);
+
+    // Initialize or check the bot match count on the socket object.
+    socket.botMatchCount = socket.botMatchCount || 0;
+    if (socket.botMatchCount >= 2) {
+      console.log(`[BOT LIMIT] User ${socketId} has reached the bot match limit of 2. Will not match with bot.`);
+      return; // Do not set a timer for a bot match.
+    }
+
+    // Set a timer to match with a bot if the user is still waiting.
     setTimeout(async () => {
-      console.log(`[DEBUG] 5s timer fired for: ${socketId}`);
       try {
         const isWaiting = await this.queue.isUserInQueue(socketId);
-        console.log(`[DEBUG] isUserInQueue for ${socketId}? : ${isWaiting}`);
-
         if (isWaiting) {
-          // User is still in the queue, let's match them with a bot
-          console.log(`[DEBUG] ${socketId} is still waiting. Attempting to match with bot.`);
+          console.log(`[BOT MATCH] User ${socketId} is still waiting after 2s, matching with bot.`);
           await this.queue.dequeue(socketId); // Remove from queue
           this.emit("match", socketId, this.botId);
-          console.log(`[DEBUG] "match" event emitted for ${socketId} and bot.`);
-        } else {
-          console.log(`[DEBUG] ${socketId} is no longer in queue. Bot match aborted.`);
         }
       } catch (error) {
         console.error(`[ERROR] Failed during bot match timer for socket ${socketId}:`, error);
       }
-    }, 5000); // 5-second wait
+    }, 2000); // Set to 2-second wait
   }
 }
 

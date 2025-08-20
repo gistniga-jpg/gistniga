@@ -91,6 +91,11 @@ matchmaker.on("match", (socketId1, socketId2) => {
 
   if (socketId2 === BOT_ID) {
     if (!socket1) return console.error("[CRITICAL] Bot matched with a non-existent socket.");
+
+    // Increment bot match count for the user
+    socket1.botMatchCount = (socket1.botMatchCount || 0) + 1;
+    console.log(`[BOT COUNT] User ${socket1.id} has been matched with a bot ${socket1.botMatchCount} time(s).`);
+
     const roomId = `room_${uuidv4()}`;
     (async () => {
       await createRoom(roomId, [socketId1, BOT_ID]);
@@ -188,8 +193,16 @@ io.on("connection", (socket) => {
   socket.on('stop typing', (roomId) => socket.to(roomId).emit('stop typing'));
 
   socket.on("find partner", async () => {
+    // Filter out connections that are likely bots
+    const ua = (socket.handshake.headers['user-agent'] || '').toLowerCase();
+    if (ua.includes('bot')) {
+      console.log(`[BOT FILTER] Search bot connection ignored: ${socket.id}`);
+      return; // Do not enqueue search bots
+    }
+
     try {
-      await matchmaker.findPartner(socket.id);
+      // Pass the entire socket object to handle match limits
+      await matchmaker.findPartner(socket);
     } catch (e) {
       console.error(`[ERROR] find partner error for socket ${socket.id}:`, e);
       socket.emit('server error', '매칭에 실패했습니다. 잠시 후 다시 시도해주세요.');
